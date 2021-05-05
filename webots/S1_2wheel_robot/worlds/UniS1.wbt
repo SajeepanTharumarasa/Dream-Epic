@@ -1,0 +1,328 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  info [
+    "Arena for Stage 1 of SLRC2021 University Category"
+  ]
+  title "SLRC2021 UniS1"
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation 0.1955708790432912 -0.934372440569234 -0.297825743640351 4.016724479612541
+  position 4.224929955745972 3.271696792923339 -2.0574608516090875
+}
+DirectionalLight {
+  direction 0 -1 0
+}
+DirectionalLight {
+  direction -1 -1 0
+}
+DirectionalLight {
+  direction 0 -1 -1
+}
+DirectionalLight {
+  direction 1 -1 0
+}
+DirectionalLight {
+  direction 0 -1 1
+}
+RectangleArena {
+  translation -0.02 0 0
+  name "Floor_black"
+  floorSize 3 4
+  floorTileSize 2 2
+  floorAppearance Parquetry {
+    type "dark strip"
+    colorOverride 0 0 0
+  }
+  wallAppearance DEF Wall_white PBRAppearance {
+    roughness 1
+    metalness 0
+    name "Wall_white"
+  }
+}
+DEF Line Solid {
+  translation -0.613 -0.00485 -1.5
+  scale 0.01 0.01 0.01
+  children [
+    Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../solidworks/Lines.STL"
+        ]
+      }
+      castShadows FALSE
+      isPickable FALSE
+    }
+  ]
+  name "White_lines"
+  locked TRUE
+  translationStep 0
+  rotationStep 0
+}
+DEF Squares Group {
+  children [
+    DEF Patch Solid {
+      translation -0.075 -0.00484 1.1
+      scale 0.01 0.01 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/Square.STL"
+            ]
+          }
+          castShadows FALSE
+          isPickable FALSE
+        }
+      ]
+      name "color_patch"
+      locked TRUE
+      translationStep 0
+      rotationStep 0
+    }
+    DEF Green Solid {
+      translation 0.01 -0.00484 -1.65
+      scale 0.01 0.01 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/Square.STL"
+            ]
+          }
+          castShadows FALSE
+          isPickable FALSE
+        }
+      ]
+      name "green_square"
+      locked TRUE
+      translationStep 0
+      rotationStep 0
+    }
+    DEF Red Solid {
+      translation -0.41 -0.00484 -1.65
+      scale 0.01 0.01 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/Square.STL"
+            ]
+          }
+          castShadows FALSE
+          isPickable FALSE
+        }
+      ]
+      name "red_square"
+      locked TRUE
+      translationStep 0
+      rotationStep 0
+    }
+    DEF Blue Solid {
+      translation 0.43 -0.00484 -1.65
+      scale 0.01 0.01 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/Square.STL"
+            ]
+          }
+          castShadows FALSE
+          isPickable FALSE
+        }
+      ]
+      name "blue_square"
+      locked TRUE
+      translationStep 0
+      rotationStep 0
+    }
+  ]
+}
+DEF Inner_wall Solid {
+  translation 0.005 0 -0.66
+  scale 0.01 0.01 0.01
+  children [
+    DEF Inner_wall Shape {
+      appearance USE Wall_white
+      geometry Mesh {
+        url [
+          "../solidworks/Inner_walls.STL"
+        ]
+      }
+    }
+  ]
+  name "Inner_walls"
+  boundingObject USE Inner_wall
+  locked TRUE
+  recognitionColors [
+    1 1 1
+  ]
+  translationStep 0
+  rotationStep 0
+}
+DEF Right_pillar Solid {
+  translation 0.12 0.02 0.74
+  children [
+    Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.02 0.04 0.12
+      }
+    }
+  ]
+  name "R_pillar"
+  radarCrossSection 1
+}
+DEF Left_pillar Solid {
+  translation -0.12 0.04 0.74
+  children [
+    Shape {
+      appearance PBRAppearance {
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.02 0.09 0.12
+      }
+    }
+  ]
+  name "L_pillar"
+  radarCrossSection 1
+}
+Robot {
+  translation -7.01732e-05 -0.000476394 1.62025
+  rotation 2.8825799943725435e-07 0.999999998047771 6.248499987801496e-05 3.14159
+  children [
+    DEF body Transform {
+      translation 0 0.02 0
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0.9
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.12 0.01 0.1
+          }
+        }
+      ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 1432.3199093411852
+        anchor -0.055 0.02 -0.03
+      }
+      device [
+        RotationalMotor {
+          name "left_motor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.055 0.02 -0.03
+        rotation 0.5161697320151172 0.5161699256707237 -0.6834745171434862 1.942493077194063
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.01
+              radius 0.02
+            }
+          }
+        ]
+        boundingObject USE wheel
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 1432.3199085819226
+        anchor 0.055 0.02 -0.03
+      }
+      device [
+        RotationalMotor {
+          name "right_motor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.055 0.02 -0.03
+        rotation 0.5161695416767637 0.5161697353329896 -0.6834748046354536 1.9424926852857891
+        children [
+          Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.01
+              radius 0.02
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE wheel
+        physics Physics {
+        }
+      }
+    }
+    Solid {
+      translation 0 0.0075 0.05
+      children [
+        DEF ball Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Sphere {
+            radius 0.0075
+          }
+        }
+      ]
+      name "solid(2)"
+      boundingObject USE ball
+      physics Physics {
+      }
+    }
+  ]
+  boundingObject USE body
+  physics Physics {
+    mass 1
+  }
+  controller "my_controller"
+  controllerArgs [
+    ""
+  ]
+}
