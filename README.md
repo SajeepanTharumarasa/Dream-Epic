@@ -1,2 +1,2 @@
-# Dream-Epic-
+# Dream-Epic
 SLRC competition files
