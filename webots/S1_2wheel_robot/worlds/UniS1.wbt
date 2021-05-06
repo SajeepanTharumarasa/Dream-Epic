@@ -7,8 +7,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.1955708790432912 -0.934372440569234 -0.297825743640351 4.016724479612541
-  position 4.224929955745972 3.271696792923339 -2.0574608516090875
+  orientation 0.14661791541379687 0.8223924428435818 0.5497034262522648 3.705320913992801
+  position -0.7816348912895232 1.7236999877650632 1.1876464204422599
 }
 DirectionalLight {
   direction 0 -1 0
@@ -218,7 +218,7 @@ DEF Left_pillar Solid {
   radarCrossSection 1
 }
 Robot {
-  translation -7.01732e-05 -0.000476394 1.62025
+  translation -4.34626e-06 0.009795 1.64
   rotation 2.8825799943725435e-07 0.999999998047771 6.248499987801496e-05 3.14159
   children [
     DEF body Transform {
@@ -227,7 +227,7 @@ Robot {
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0.9
+            baseColor 0.815686 1 0.388235
             roughness 1
             metalness 0
           }
@@ -253,6 +253,7 @@ Robot {
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
+              baseColor 0 0.333333 0
               roughness 1
               metalness 0
             }
@@ -283,6 +284,7 @@ Robot {
         children [
           Shape {
             appearance PBRAppearance {
+              baseColor 0 0.333333 0
               roughness 1
               metalness 0
             }
@@ -315,6 +317,123 @@ Robot {
       boundingObject USE ball
       physics Physics {
       }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 0.0273 0.03
+      }
+      device [
+        RotationalMotor {
+          name "piller_detect_bottom"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.0275 0.03
+        children [
+          DEF sensor Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.666667 1
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.005
+              radius 0.02
+            }
+          }
+          DistanceSensor {
+            type "infra-red"
+          }
+        ]
+        name "solid(3)"
+        boundingObject USE sensor
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor 0 0.0273 0.03
+      }
+      device [
+        RotationalMotor {
+          name "piller_detect_bottom"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.055 0.03
+        rotation 0 1 0 -0.9163043867199887
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.333333 0 1
+              roughness 1
+              metalness 0
+            }
+            geometry Cone {
+              bottomRadius 0.015
+              height 0.05
+            }
+          }
+          DistanceSensor {
+          }
+        ]
+        name "solid(4)"
+      }
+    }
+    DistanceSensor {
+      translation 0 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.666667 0 0.498039
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.035 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "distance sensor(1)"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.035 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "distance sensor(2)"
+      type "infra-red"
     }
   ]
   boundingObject USE body
