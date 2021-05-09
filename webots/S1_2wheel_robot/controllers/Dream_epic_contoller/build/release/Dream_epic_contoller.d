@@ -1,4 +1,4 @@
-build/release/my_controller.o: my_controller.cpp \
+build/release/Dream_epic_contoller.o: Dream_epic_contoller.cpp \
  D:\Program\ Files\Webots/include/controller/cpp/webots/Robot.hpp \
  D:\Program\ Files\Webots/include/controller/cpp/webots/Motor.hpp \
  D:\Program\ Files\Webots/include/controller/cpp/webots/Device.hpp \

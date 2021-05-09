@@ -7,8 +7,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.1955708790432912 -0.934372440569234 -0.297825743640351 4.016724479612541
-  position 4.224929955745972 3.271696792923339 -2.0574608516090875
+  orientation -0.43513332922711623 0.7834723251002135 0.44365538607999716 1.9834709322910091
+  position 4.185188860768801 7.003432607624794 -0.6817156581118058
 }
 DirectionalLight {
   direction 0 -1 0
@@ -186,7 +186,7 @@ DEF Inner_wall Solid {
   rotationStep 0
 }
 DEF Right_pillar Solid {
-  translation 0.12 0.02 0.74
+  translation 0.2 0.02 0.74
   children [
     Shape {
       appearance PBRAppearance {
@@ -202,7 +202,7 @@ DEF Right_pillar Solid {
   radarCrossSection 1
 }
 DEF Left_pillar Solid {
-  translation -0.12 0.04 0.74
+  translation -0.2 0.04 0.74
   children [
     Shape {
       appearance PBRAppearance {
@@ -218,8 +218,8 @@ DEF Left_pillar Solid {
   radarCrossSection 1
 }
 Robot {
-  translation -7.01732e-05 -0.000476394 1.62025
-  rotation 2.8825799943725435e-07 0.999999998047771 6.248499987801496e-05 3.14159
+  translation -4.35207e-06 0 1.64
+  rotation 0 1 0 3.14159
   children [
     DEF body Transform {
       translation 0 0.02 0
@@ -227,7 +227,7 @@ Robot {
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0.9
+            baseColor 0.815686 1 0.388235
             roughness 1
             metalness 0
           }
@@ -237,7 +237,7 @@ Robot {
         }
       ]
     }
-    HingeJoint {
+    DEF right_wheel HingeJoint {
       jointParameters HingeJointParameters {
         position 1432.3199093411852
         anchor -0.055 0.02 -0.03
@@ -248,11 +248,12 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation -0.055 0.02 -0.03
-        rotation 0.5161697320151172 0.5161699256707237 -0.6834745171434862 1.942493077194063
+        translation -0.05499999411369054 0.020003784941262315 -0.02999317517352416
+        rotation -0.45704046766810147 -0.4570408402332355 0.7630384533381139 4.445181928186963
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
+              baseColor 0 0.333333 0
               roughness 1
               metalness 0
             }
@@ -267,7 +268,7 @@ Robot {
         }
       }
     }
-    HingeJoint {
+    DEF left_wheel HingeJoint {
       jointParameters HingeJointParameters {
         position 1432.3199085819226
         anchor 0.055 0.02 -0.03
@@ -278,11 +279,12 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0.055 0.02 -0.03
-        rotation 0.5161695416767637 0.5161697353329896 -0.6834748046354536 1.9424926852857891
+        translation 0.055000005865753036 0.02000367381203341 -0.029993353572337626
+        rotation -0.4570402385336936 -0.45704061109972277 0.7630387278288414 4.445182275153814
         children [
           Shape {
             appearance PBRAppearance {
+              baseColor 0 0.333333 0
               roughness 1
               metalness 0
             }
@@ -298,8 +300,58 @@ Robot {
         }
       }
     }
-    Solid {
+    DEF piller_detect HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 0.045 0
+      }
+      device [
+        RotationalMotor {
+          name "piller_detect_bottom"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.045 0
+        rotation 0 1 0 3.141592653589793
+        children [
+          DEF sensor Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.666667 1
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.04
+              radius 0.01
+            }
+          }
+          DistanceSensor {
+            translation 0 -0.015 0
+            name "bottom_sensor"
+            lookupTable [
+              0 0 0
+              0.4 1000 0
+            ]
+            type "infra-red"
+          }
+          DistanceSensor {
+            name "top_sensor"
+            lookupTable [
+              0 0 0
+              0.4 1000 0
+            ]
+            type "infra-red"
+          }
+        ]
+        name "solid(3)"
+        boundingObject USE sensor
+        physics Physics {
+        }
+      }
+    }
+    DEF support_ball Solid {
       translation 0 0.0075 0.05
+      rotation 0 0 -1 2.3276357876976306e-07
       children [
         DEF ball Shape {
           appearance PBRAppearance {
@@ -315,6 +367,119 @@ Robot {
       boundingObject USE ball
       physics Physics {
       }
+    }
+    DEF left_2 DistanceSensor {
+      translation 0.04 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.666667 0 0.498039
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "left2_ir"
+      type "infra-red"
+    }
+    DEF left DistanceSensor {
+      translation 0.02 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "left_ir"
+      type "infra-red"
+    }
+    DEF center DistanceSensor {
+      translation 0 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "center_ir"
+      type "infra-red"
+    }
+    DEF right DistanceSensor {
+      translation -0.02 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "right_ir"
+      type "infra-red"
+    }
+    DEF right_2 DistanceSensor {
+      translation -0.04 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.666667 0 0.498039
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "right2_ir"
+      type "infra-red"
+    }
+    Camera {
+      translation 0 0.02 0.06
+      rotation 1 0 0 -1.5707996938995747
+      children [
+        Solid {
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.01 0.01 0.01
+              }
+            }
+          ]
+        }
+      ]
+      recognitionColors [
+        0 0 0
+      ]
     }
   ]
   boundingObject USE body
