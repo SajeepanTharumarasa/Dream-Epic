@@ -6,6 +6,9 @@
 
 #define TIME_STEP 32
 #define MAX_SPEED 7.5
+#define petch_center_time  1
+#define turn_move_time 1
+#define turn_time 1
 
 using namespace webots;
 int step=0;
@@ -49,13 +52,11 @@ void colour_detecting(){
                return; }
            else{ 
                return;}
-         
    }
    
    
 int find_value(double top, double bottom){
          int size;double value;
-         std::cout << top << std::endl;
          if (top<990){
                size=2;
                value = top;}
@@ -68,7 +69,6 @@ int find_value(double top, double bottom){
              size = size*8;} 
          else if (value>740 && value<840 ) {
              size = size*12;} 
-     std::cout << size << std::endl;
      return size;
      
      }
@@ -98,66 +98,137 @@ int piller_detecting() {
                 sensorMotor->setVelocity(MAX_SPEED);}
             else{
                 sensorMotor->setVelocity(0);
-            break;}
-            
+            break;}         
      }
      robot->step(TIME_STEP) ;
      value_top = sensor_top->getValue();
      value_bottom = sensor_bottom->getValue();
      int value_right = find_value(value_top,value_bottom);
      int x =(abs(value_right-value_left));
+     std::cout << "petch  " << x << std::endl;
+     x=(x/4)-2;
      return x;
-     
 }
 
+void turn_90(int direction){
+     double left_speed =0;
+     double right_speed =0;
+     if (direction==1){
+          left_speed=-1*MAX_SPEED;
+          right_speed=MAX_SPEED;}
+     else if (direction==-1){
+          left_speed=MAX_SPEED;
+          right_speed=-1*MAX_SPEED;}
+     else {return;}
+     double start_time= robot->getTime();
+     double time = start_time+(2*3.14/6);
+     double current_time=0;
+     while (robot->step(TIME_STEP) != -1) {
+          current_time = robot->getTime();
+          if (time>current_time){
+              leftMotor->setVelocity( left_speed);
+              rightMotor->setVelocity( right_speed);}
+          else{break;}
+     }
+     return;    
+     }
+
+void move_center(double time){
+     double start_time= robot->getTime();
+     time+=start_time;
+     //std::cout << time << std::endl;
+     double current_time=0;
+     while (robot->step(TIME_STEP) != -1) {
+          
+          current_time= robot->getTime();
+          //std::cout << current_time << std::endl;
+          if (time>current_time){
+              leftMotor->setVelocity( MAX_SPEED);
+              rightMotor->setVelocity( MAX_SPEED);}
+          else{break;}
+     }
+     return;    
+}
+
+void stop(){
+    leftMotor->setVelocity(0* MAX_SPEED);
+    rightMotor->setVelocity(0* MAX_SPEED);
+}
 
 void forword_petch(int step){
-      if (step==2){
-          colour_detecting();}
+          if (step==2){
+              move_center(0.9);
+              colour_detecting();}
+          else if (step==3) {
+              move_center(0.9);
+              stop();
+             junction_turn[1] = piller_detecting();}
+          else if(step==4 || step==5){
+              move_center(0.33);
+              //std::cout << junction_turn[step-4] << std::endl;
+              turn_90(junction_turn[step-4]);
+              }
+          else if(step==6){
+              move_center(1);
+              stop();
+              return;}               
       while (robot->step(TIME_STEP) != -1) {
-      
+          
           const double value_right = sensor_right->getValue();
           const double value_left = sensor_left->getValue();
           const double value_center = sensor_center->getValue();
           if (abs(value_center-value_left)<20 && abs(value_right-value_center)<20){
               leftMotor->setVelocity( MAX_SPEED);
               rightMotor->setVelocity( MAX_SPEED);}
-          else if (step==3){
-              leftMotor->setVelocity(0* MAX_SPEED);
-              rightMotor->setVelocity(0* MAX_SPEED);
-              junction_turn[1]= piller_detecting();
-              //std::cout << junction_turn[1] << std::endl;
-              return;}
           else{
-          return;}
+              break;}
       } 
+    return;
 }   
    
 int main(int argc, char **argv) {
+      DistanceSensor *sensor_left2 = robot->getDistanceSensor("left2_ir");
+      DistanceSensor *sensor_right2 = robot->getDistanceSensor("right2_ir");
      leftMotor->setPosition(INFINITY);
      rightMotor->setPosition(INFINITY);
      leftMotor->setVelocity(0 * MAX_SPEED);
      rightMotor->setVelocity(0 * MAX_SPEED);
      
      // get a handler to the motors and set target position to infinity (speed control)
-     
      sensor_right->enable(TIME_STEP);
      sensor_left->enable(TIME_STEP);
      sensor_center->enable(TIME_STEP);
+     sensor_right2->enable(TIME_STEP);
+     sensor_left2->enable(TIME_STEP);
   
   while (robot->step(TIME_STEP) != -1) {
-    const double value_right = sensor_right->getValue();
-    const double value_left = sensor_left->getValue();
-    const double value_center = sensor_center->getValue();
+    const double r_1 = sensor_right->getValue();
+    const double l_1 = sensor_left->getValue();
+    const double c_0 = sensor_center->getValue();
+    const double r_2 = sensor_right2->getValue();
+    const double l_2 = sensor_left2->getValue();
     
-    if (abs(value_center-value_left)<20 && abs(value_right-value_center)<20){
+    
+    if (c_0<420 && r_1<420 && l_1<420){
           step+=1;
-          if(step<4){forword_petch (step);}}
-    else if(abs(value_center-value_left)>320 && abs(value_right-value_center)>320){
+          forword_petch (step);
+          if(step==6){break;}}
+    else if(c_0<420 && r_1>900 && l_1>900){
           leftMotor->setVelocity( MAX_SPEED);
           rightMotor->setVelocity( MAX_SPEED);}
+    else if (r_1>900 && r_2>900 && l_1<420 && l_2>900){
+         leftMotor->setVelocity( MAX_SPEED);
+         rightMotor->setVelocity(-0.5*MAX_SPEED);}
+    else if (r_1<420 && r_2>900 && l_1>900 && l_2>900){
+         leftMotor->setVelocity( -0.5*MAX_SPEED);
+         rightMotor->setVelocity(MAX_SPEED);}
+    else if(r_1>900 && r_2>900 && c_0<420 && l_1<420 && l_2<420){
+         move_center(0.33);
+         turn_90(-1);}
+    else if(r_1<420 && r_2<420 && c_0<420 && l_1>900 && l_2>900){
+         move_center(0.33);
+         turn_90(1);}      
     else{break;}
-    
   };
   // Enter here exit cleanup code.
 
