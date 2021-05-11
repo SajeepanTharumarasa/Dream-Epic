@@ -7,8 +7,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.04033861784073588 -0.9595854316004157 -0.2785113918153851 2.601795499245779
-  position -2.165088923828674 2.57030583986538 -3.1840850923657897
+  orientation 0.5121808997148222 -0.659968113363214 -0.549647901215965 4.119203394046848
+  position 0.42659368386532254 8.850881770533483 -0.3306372066209244
 }
 DirectionalLight {
   direction 0 -1 0
@@ -71,7 +71,7 @@ DEF Squares Group {
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 0 0
+            baseColor 0 1 0
             roughness 1
             metalness 0
           }
@@ -186,7 +186,7 @@ DEF Inner_wall Solid {
   rotationStep 0
 }
 DEF Right_pillar Solid {
-  translation 0.2 0.02 0.74
+  translation 0.16 0.02 0.74
   children [
     Shape {
       appearance PBRAppearance {
@@ -202,7 +202,7 @@ DEF Right_pillar Solid {
   radarCrossSection 1
 }
 DEF Left_pillar Solid {
-  translation -0.12 0.04 0.74
+  translation -0.16 0.04 0.74
   children [
     Shape {
       appearance PBRAppearance {
@@ -248,8 +248,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation -0.05499999411369054 0.020003784941262315 -0.02999317517352416
-        rotation -0.45704046766810147 -0.4570408402332355 0.7630384533381139 4.445181928186963
+        translation -0.055 0.02 -0.0299996
+        rotation 0.2660720619028865 0.2660761325776102 -0.9265037234395168 1.6470578970598813
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -279,8 +279,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0.055000005865753036 0.02000367381203341 -0.029993353572337626
-        rotation -0.4570402385336936 -0.45704061109972277 0.7630387278288414 4.445182275153814
+        translation 0.055 0.019997 -0.0299951
+        rotation -0.2899604715287653 -0.28996428624188236 0.9120546242715136 4.620466204661718
         children [
           Shape {
             appearance PBRAppearance {
@@ -311,8 +311,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0 0.045 0
-        rotation 0 1 0 3.141592653589793
+        translation -1.7310081882179355e-11 0.03999985208433487 -6.375394956170562e-10
+        rotation -6.478684776060195e-14 -1 -1.5708127643699157e-12 3.1564405764495294
         children [
           DEF sensor Shape {
             appearance PBRAppearance {
@@ -321,12 +321,12 @@ Robot {
               metalness 0
             }
             geometry Cylinder {
-              height 0.04
+              height 0.03
               radius 0.01
             }
           }
           DistanceSensor {
-            translation 0 -0.015 0
+            translation 0 -0.01 0
             name "bottom_sensor"
             lookupTable [
               0 0 0
@@ -335,6 +335,7 @@ Robot {
             type "infra-red"
           }
           DistanceSensor {
+            translation 0 0.01 0
             name "top_sensor"
             lookupTable [
               0 0 0
@@ -369,7 +370,7 @@ Robot {
       }
     }
     DEF left_2 DistanceSensor {
-      translation 0.046 0.02 0.06
+      translation 0.035 0.02 0.06
       rotation 0 0 1 -1.5707
       children [
         Shape {
@@ -441,7 +442,7 @@ Robot {
       type "infra-red"
     }
     DEF right_2 DistanceSensor {
-      translation -0.046 0.02 0.06
+      translation -0.035 0.02 0.06
       rotation 0 0 1 -1.5707
       children [
         Shape {
@@ -484,6 +485,7 @@ Robot {
   ]
   boundingObject USE body
   physics Physics {
+    density -1
     mass 1
   }
   controller "Dream_epic_contoller"
