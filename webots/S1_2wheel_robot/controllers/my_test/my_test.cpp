@@ -1,15 +1,32 @@
 #include <webots/Robot.hpp>
 #include <webots/Motor.hpp>
-#include <webots/DistanceSensor.hpp>
-#include <webots/camera.hpp>
 #include <webots/Camera.hpp>
+#include <webots/DistanceSensor.hpp>
 #include <iostream>
+using namespace webots;
 
 #define TIME_STEP 32
-#define MAX_SPEED 7.5
-
-using namespace webots;
+#define MAX_SPEED 7.5    // anguler velocity
+#define robot_length 12  // in cm
+#define robot_width 10   // in cm
+#define wheel_radius 2   // in cm
+#define petch_lenght 15  // in cm 
+   
+double petch_center_time = 0.8*petch_lenght/(MAX_SPEED*wheel_radius);
+double turn_90time = 3.14*(robot_width/2)/(MAX_SPEED*wheel_radius);
+ 
+int step=0;
+int junction_turn[2] ={1,0}; 
+//inticial device setting
 Robot *robot = new Robot();
+Motor *leftMotor = robot->getMotor("left_motor");
+Motor *rightMotor = robot->getMotor("right_motor");
+
+DistanceSensor *sensor_right = robot->getDistanceSensor("right_ir");
+DistanceSensor *sensor_left = robot->getDistanceSensor("left_ir");
+DistanceSensor *sensor_center = robot->getDistanceSensor("center_ir");
+DistanceSensor *sensor_left2 = robot->getDistanceSensor("left2_ir");
+DistanceSensor *sensor_right2 = robot->getDistanceSensor("right2_ir");
 
 int find_value(double top, double bottom){
          int size;double value;
@@ -27,40 +44,95 @@ int find_value(double top, double bottom){
              size = size*12;} 
      return size;
      }
+void turn_90(int direction){
+     double left_speed =0;
+     double right_speed =0;
+     if (direction==1){
+          left_speed=-1*MAX_SPEED;
+          right_speed=MAX_SPEED;}
+     else if (direction==-1){
+          left_speed=MAX_SPEED;
+          right_speed=-1*MAX_SPEED;}
+     else {return;}
+     
+     double time = robot->getTime()+turn_90time;
+     double current_time=0;
+     
+     while (robot->step(TIME_STEP) != -1) {
+          current_time = robot->getTime();
+          if (time>current_time){
+              leftMotor->setVelocity( left_speed);
+              rightMotor->setVelocity( right_speed);}
+          else{break;}
+     }
+     return;    
+     }
 
 int main() {
-    DistanceSensor *sensor_top = robot->getDistanceSensor("top_sensor");
+    leftMotor->setPosition(INFINITY);
+    rightMotor->setPosition(INFINITY);
+     
+     leftMotor->setVelocity(0);
+           rightMotor->setVelocity(0);
+     // get a handler to the motors and set target position to infinity (speed control)
+     sensor_right->enable(TIME_STEP);
+     sensor_left->enable(TIME_STEP);
+     sensor_center->enable(TIME_STEP);
+     sensor_right2->enable(TIME_STEP);
+     sensor_left2->enable(TIME_STEP);
+     
     DistanceSensor *sensor_bottom = robot->getDistanceSensor("bottom_sensor");
-    sensor_top->enable(TIME_STEP);
     sensor_bottom->enable(TIME_STEP);
     Motor *sensorMotor = robot->getMotor("piller_detect_bottom");
+    Motor *right2Motor = robot->getMotor("right2");
+    Motor *left2Motor = robot->getMotor("left2");
+    
     sensorMotor->setPosition(INFINITY);
     sensorMotor->setVelocity(0);
-    double time_rotate=3.275/MAX_SPEED;
+    right2Motor->setPosition(INFINITY);
+    right2Motor->setVelocity(0);
+    left2Motor->setPosition(INFINITY);
+    left2Motor->setVelocity(0);
     
-    robot->step(TIME_STEP) ;
-    double value_top = sensor_top->getValue();
-    double value_bottom = sensor_bottom->getValue();
-    std::cout << "Sensor left is: " << value_bottom << std::endl;
-    int value_left = find_value(value_top,value_bottom);
-     
-     
-     double start_time = robot->getTime();
-     double current_time = start_time;
+     double time_rotate=(3.3/MAX_SPEED);
+     const double start_time = robot->getTime();
+     double current_time = 0;
      while (robot->step(TIME_STEP) != -1) {
             current_time =robot->getTime();
             if(start_time+time_rotate>current_time){
-                sensorMotor->setVelocity(MAX_SPEED);}
+                sensorMotor->setVelocity(0.5*MAX_SPEED);
+                left2Motor->setVelocity(MAX_SPEED);
+                right2Motor->setVelocity(-1*MAX_SPEED);}
             else{
-            sensorMotor->setVelocity(0);
+                sensorMotor->setVelocity(0);
+                left2Motor->setVelocity(0);
+                right2Motor->setVelocity(0);
+                  break;}} 
+    while (robot->step(TIME_STEP) != -1) {
+        const double r_1 = sensor_right->getValue();
+        const double l_1 = sensor_left->getValue();
+        const double c_0 = sensor_center->getValue();
+        const double r_2 = sensor_right2->getValue();
+        const double l_2 = sensor_left2->getValue();
+        const double c_top = sensor_bottom->getValue();
+        if(c_0<420 && r_1>900 && l_1>900){
+            leftMotor->setVelocity(0);
+           rightMotor->setVelocity(0);
             break;}
-     }
-     robot->step(TIME_STEP) ;
-     value_top = sensor_top->getValue();
-     value_bottom = sensor_bottom->getValue();
-     int value_right = find_value(value_top,value_bottom);
-     int x =abs(value_right-value_left);
-     std::cout << "Sensor right is: " << x << std::endl;
+        else if(c_top>550){
+           leftMotor->setVelocity(MAX_SPEED);
+           rightMotor->setVelocity(MAX_SPEED);}
+        else{
+            if (l_2==1000){
+                turn_90(-1);
+                continue;}
+            else if(r_2==1000){
+                turn_90(1);
+                continue;}
+           break;
+        }
+        
+    }
     
   delete robot;
   return 0;

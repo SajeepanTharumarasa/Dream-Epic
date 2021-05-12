@@ -7,8 +7,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.04033861784073588 -0.9595854316004157 -0.2785113918153851 2.601795499245779
-  position -2.165088923828674 2.57030583986538 -3.1840850923657897
+  orientation -0.5741159378727698 0.5443251105611143 0.61163801704366 2.310302326975597
+  position -1.4523932285117438 5.514386441041884 -0.12272366225762774
 }
 DirectionalLight {
   direction 0 -1 0
@@ -164,7 +164,7 @@ DEF Squares Group {
   ]
 }
 DEF Inner_wall Solid {
-  translation 0.005 0 -0.66
+  translation 0 0 -0.66
   scale 0.01 0.01 0.01
   children [
     DEF Inner_wall Shape {
@@ -202,7 +202,7 @@ DEF Right_pillar Solid {
   radarCrossSection 1
 }
 DEF Left_pillar Solid {
-  translation -0.12 0.04 0.74
+  translation -0.2 0.04 0.74
   children [
     Shape {
       appearance PBRAppearance {
@@ -218,7 +218,7 @@ DEF Left_pillar Solid {
   radarCrossSection 1
 }
 Robot {
-  translation -4.35207e-06 0 1.64
+  translation -3.81324e-06 0 1.64
   rotation 0 1 0 3.14159
   children [
     DEF body Transform {
@@ -248,13 +248,13 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation -0.05499999411369054 0.020003784941262315 -0.02999317517352416
-        rotation -0.45704046766810147 -0.4570408402332355 0.7630384533381139 4.445181928186963
+        translation -0.055 0.02 -0.0299996
+        rotation 0.2660720619028865 0.2660761325776102 -0.9265037234395168 1.6470578970598813
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
               baseColor 0 0.333333 0
-              roughness 1
+              roughness 0.2
               metalness 0
             }
             geometry Cylinder {
@@ -279,13 +279,13 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0.055000005865753036 0.02000367381203341 -0.029993353572337626
-        rotation -0.4570402385336936 -0.45704061109972277 0.7630387278288414 4.445182275153814
+        translation 0.055 0.019997 -0.0299951
+        rotation -0.2899604715287653 -0.28996428624188236 0.9120546242715136 4.620466204661718
         children [
           Shape {
             appearance PBRAppearance {
               baseColor 0 0.333333 0
-              roughness 1
+              roughness 0.2
               metalness 0
             }
             geometry Cylinder {
@@ -311,8 +311,8 @@ Robot {
         }
       ]
       endPoint Solid {
-        translation 0 0.045 0
-        rotation 0 1 0 3.141592653589793
+        translation -1.7310081882179355e-11 0.03999985208433487 -6.375394956170562e-10
+        rotation -6.478684776060195e-14 -1 -1.5708127643699157e-12 3.1564405764495294
         children [
           DEF sensor Shape {
             appearance PBRAppearance {
@@ -321,12 +321,12 @@ Robot {
               metalness 0
             }
             geometry Cylinder {
-              height 0.04
+              height 0.03
               radius 0.01
             }
           }
           DistanceSensor {
-            translation 0 -0.015 0
+            translation 0 -0.01 0
             name "bottom_sensor"
             lookupTable [
               0 0 0
@@ -335,6 +335,7 @@ Robot {
             type "infra-red"
           }
           DistanceSensor {
+            translation 0 0.01 0
             name "top_sensor"
             lookupTable [
               0 0 0
@@ -368,23 +369,38 @@ Robot {
       physics Physics {
       }
     }
-    DEF left_2 DistanceSensor {
-      translation 0.046 0.02 0.06
-      rotation 0 0 1 -1.5707
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.666667 0 0.498039
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.008 0.008 0.008
-          }
+    DEF left2 HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 0.01
+        anchor 0.035 0.02 0.064
+      }
+      device [
+        RotationalMotor {
+          name "left2"
         }
       ]
-      name "left2_ir"
-      type "infra-red"
+      endPoint DEF left_2 DistanceSensor {
+        translation 0.035 0.02 0.064
+        rotation 0 0 -0.9999999999999999 1.5706999999999998
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.666667 0 0.498039
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.008 0.008 0.008
+            }
+          }
+        ]
+        name "left2_ir"
+        lookupTable [
+          0 0 0
+          0.15 1000 0
+        ]
+        type "infra-red"
+      }
     }
     DEF left DistanceSensor {
       translation 0.017 0.02 0.06
@@ -440,23 +456,38 @@ Robot {
       name "right_ir"
       type "infra-red"
     }
-    DEF right_2 DistanceSensor {
-      translation -0.046 0.02 0.06
-      rotation 0 0 1 -1.5707
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.666667 0 0.498039
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.008 0.008 0.008
-          }
+    DEF right2 HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 0.01
+        anchor -0.035 0.02 0.064
+      }
+      device [
+        RotationalMotor {
+          name "right2"
         }
       ]
-      name "right2_ir"
-      type "infra-red"
+      endPoint DEF right_2 DistanceSensor {
+        translation -0.03500000000000003 0.02 0.064
+        rotation 0 0 -0.9999999999999999 1.5706999999999998
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.666667 0 0.498039
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.008 0.008 0.008
+            }
+          }
+        ]
+        name "right2_ir"
+        lookupTable [
+          0 0 0
+          0.15 1000 0
+        ]
+        type "infra-red"
+      }
     }
     Camera {
       translation 0 0.02 0.06
@@ -484,6 +515,7 @@ Robot {
   ]
   boundingObject USE body
   physics Physics {
+    density -1
     mass 1
   }
   controller "Dream_epic_contoller"
