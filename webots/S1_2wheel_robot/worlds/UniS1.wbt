@@ -7,8 +7,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.5121808997148222 -0.659968113363214 -0.549647901215965 4.119203394046848
-  position 0.42659368386532254 8.850881770533483 -0.3306372066209244
+  orientation -0.5741159378727698 0.5443251105611143 0.61163801704366 2.310302326975597
+  position -1.3525525917106689 4.986574078036205 -0.0970677656862796
 }
 DirectionalLight {
   direction 0 -1 0
@@ -164,7 +164,7 @@ DEF Squares Group {
   ]
 }
 DEF Inner_wall Solid {
-  translation 0.005 0 -0.66
+  translation 0 0 -0.66
   scale 0.01 0.01 0.01
   children [
     DEF Inner_wall Shape {
@@ -186,7 +186,7 @@ DEF Inner_wall Solid {
   rotationStep 0
 }
 DEF Right_pillar Solid {
-  translation 0.16 0.02 0.74
+  translation 0.12 0.02 0.74
   children [
     Shape {
       appearance PBRAppearance {
@@ -218,7 +218,7 @@ DEF Left_pillar Solid {
   radarCrossSection 1
 }
 Robot {
-  translation -4.35207e-06 0 1.64
+  translation -3.81324e-06 0 1.64
   rotation 0 1 0 3.14159
   children [
     DEF body Transform {
@@ -369,23 +369,38 @@ Robot {
       physics Physics {
       }
     }
-    DEF left_2 DistanceSensor {
-      translation 0.035 0.02 0.06
-      rotation 0 0 1 -1.5707
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.666667 0 0.498039
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.008 0.008 0.008
-          }
+    DEF left2 HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 0.01
+        anchor 0.035 0.02 0.064
+      }
+      device [
+        RotationalMotor {
+          name "left2"
         }
       ]
-      name "left2_ir"
-      type "infra-red"
+      endPoint DEF left_2 DistanceSensor {
+        translation 0.035 0.02 0.064
+        rotation 0 0 -0.9999999999999999 1.5706999999999998
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.666667 0 0.498039
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.008 0.008 0.008
+            }
+          }
+        ]
+        name "left2_ir"
+        lookupTable [
+          0 0 0
+          0.15 1000 0
+        ]
+        type "infra-red"
+      }
     }
     DEF left DistanceSensor {
       translation 0.017 0.02 0.06
@@ -441,23 +456,38 @@ Robot {
       name "right_ir"
       type "infra-red"
     }
-    DEF right_2 DistanceSensor {
-      translation -0.035 0.02 0.06
-      rotation 0 0 1 -1.5707
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.666667 0 0.498039
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.008 0.008 0.008
-          }
+    DEF right2 HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 0.01
+        anchor -0.035 0.02 0.064
+      }
+      device [
+        RotationalMotor {
+          name "right2"
         }
       ]
-      name "right2_ir"
-      type "infra-red"
+      endPoint DEF right_2 DistanceSensor {
+        translation -0.03500000000000003 0.02 0.064
+        rotation 0 0 -0.9999999999999999 1.5706999999999998
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.666667 0 0.498039
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.008 0.008 0.008
+            }
+          }
+        ]
+        name "right2_ir"
+        lookupTable [
+          0 0 0
+          0.15 1000 0
+        ]
+        type "infra-red"
+      }
     }
     Camera {
       translation 0 0.02 0.06
