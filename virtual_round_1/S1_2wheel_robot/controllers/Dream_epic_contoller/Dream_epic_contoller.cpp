@@ -169,7 +169,7 @@ void wall_flow(){
     left2Motor->setVelocity(0);
     
      // rotate the edge, top cylinder sensors to the directions left, right, foroword
-     double time_rotate=(3.3/MAX_SPEED);
+     double time_rotate=(3.5/MAX_SPEED);
      double start_time = robot->getTime();
      double current_time = 0;
      while (robot->step(TIME_STEP) != -1) {
@@ -193,7 +193,7 @@ void wall_flow(){
         const double c_top = sensor_bottom->getValue();
         if(c_0<420 && r_1>900 && l_1>900){                     // check the end point of wall, therefore begining of the line
             break;} 
-        else if(c_top>550){                                   // check front obstacle for finding turns
+        else if(c_top>570){                                   // check front obstacle for finding turns
            leftMotor->setVelocity(MAX_SPEED);
            rightMotor->setVelocity(MAX_SPEED);}
         else{
@@ -243,9 +243,7 @@ void find_distination(){
                       break;}
                   else{ stop();
                         turn_90(right);                         // rotate the bot half circle for reverce direction moving
-                        turn_90(right);
-                      
-                      
+                        turn_90(right);      
                         steps=0;  petch+=1;
                         move_center(0.2);}    }}
         else if(c_0< 420 && r_1>900 && l_1>900){         // moving stright && fllow the line 
@@ -337,11 +335,11 @@ int main(int argc, char **argv) {
           leftMotor->setVelocity( MAX_SPEED);
           rightMotor->setVelocity( MAX_SPEED);}
     else if (r_1>900 && r_2>640 && l_1<420 && l_2>640){    // turn the bot in right bit to follow the curve line
-         leftMotor->setVelocity( MAX_SPEED);
-         rightMotor->setVelocity(-0.5*MAX_SPEED);}
+         leftMotor->setVelocity( 0.5*MAX_SPEED);
+         rightMotor->setVelocity(-0.25*MAX_SPEED);}
     else if (r_1<420 && r_2>640 && l_1>900 && l_2>640){
-         leftMotor->setVelocity( -0.5*MAX_SPEED);
-         rightMotor->setVelocity(MAX_SPEED);}
+         leftMotor->setVelocity( -0.25*MAX_SPEED);
+         rightMotor->setVelocity(0.5*MAX_SPEED);}
     else if(r_1>900 && r_2>640 && c_0<420 && l_1<420 && l_2<230){          //left turn
          move_center(0.27);
          turn_90(left);}
