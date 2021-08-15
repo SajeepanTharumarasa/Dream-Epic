@@ -5,7 +5,7 @@
 #include <iostream>
 
 #define TIME_STEP 32
-#define MAX_SPEED 7.5
+#define MAX_SPEED 5.0
 
 using namespace webots;
 
