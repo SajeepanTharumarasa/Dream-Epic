@@ -1,0 +1,78 @@
+#VRML_OBJ R2021a utf8
+DEF Boxes Group {
+  children [
+    DEF White_Box Solid {
+      translation 0.75 0.02 0.71
+      children [
+        DEF White_Box Shape {
+          appearance PBRAppearance {
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.04 0.04 0.04
+          }
+        }
+      ]
+      name "White_Box"
+      boundingObject USE White_Box
+      physics DEF Box_Ph Physics {
+        density 585
+      }
+    }
+    DEF Red_Box Solid {
+      translation 0.75 0.02 0.08
+      children [
+        DEF Red_Box Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.08 0.04 0.08
+          }
+        }
+      ]
+      name "Red_Box"
+      boundingObject USE Red_Box
+      physics USE Box_Ph
+    }
+    DEF Green_Box Solid {
+      translation 0.12 0.02 -0.55
+      children [
+        DEF Green_Box Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.06 0.04 0.06
+          }
+        }
+      ]
+      name "Green_Box"
+      boundingObject USE Green_Box
+      physics USE Box_Ph
+    }
+    DEF Blue_Box Solid {
+      translation 0.12 0.06 -0.55
+      children [
+        DEF Blue_Box Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.04 0.04 0.04
+          }
+        }
+      ]
+      name "Blue_Box"
+      boundingObject USE Blue_Box
+      physics USE Box_Ph
+    }
+  ]
+}
