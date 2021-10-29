@@ -1,0 +1,304 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  info [
+    "Sample testing arena for final round of SLRC2021 university category"
+  ]
+  title "SLRC2021 UniFR"
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.3857898186870832 0.8415464384033323 0.37810819590172107 1.722611505144828
+  position 5.359045431501224 5.713780905849202 -0.12408478187717478
+}
+DirectionalLight {
+  direction 0 -1 0
+}
+DirectionalLight {
+  direction -1 -1 0
+}
+DirectionalLight {
+  direction 0 -1 -1
+}
+DirectionalLight {
+  direction 1 -1 0
+}
+DirectionalLight {
+  direction 0 -1 1
+}
+RectangleArena {
+  name "Floor_black"
+  floorSize 4 5
+  floorTileSize 2 2
+  floorAppearance Parquetry {
+    type "dark strip"
+    colorOverride 0 0 0
+  }
+  wallAppearance DEF Wall_white PBRAppearance {
+    roughness 1
+    metalness 0
+    name "Wall_white"
+  }
+}
+DEF Grid Solid {
+  translation -1.1588 -0.0049 1.36
+  rotation 0 -1 0 -1.5707953071795862
+  children [
+    DEF Grid Shape {
+      appearance PBRAppearance {
+        roughness 0.9
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../solidworks/Grid.STL"
+        ]
+      }
+    }
+  ]
+  name "Grid"
+  locked TRUE
+}
+DEF Red_Cells Group {
+  children [
+    DEF Cell_1 Solid {
+      translation -0.35 -0.0049 0.88
+      children [
+        DEF Cell Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedCell.STL"
+            ]
+          }
+        }
+      ]
+      name "Cell_1"
+      locked TRUE
+    }
+    DEF Cell_2 Solid {
+      translation -0.8 -0.0049 0.88
+      children [
+        USE Cell
+      ]
+      name "Cell_2"
+      locked TRUE
+    }
+    DEF Cell_3 Solid {
+      translation -0.35 -0.0049 0.43
+      children [
+        USE Cell
+      ]
+      name "Cell_3"
+      locked TRUE
+    }
+    DEF Cell_4 Solid {
+      translation -0.8 -0.0049 0.43
+      children [
+        USE Cell
+      ]
+      name "Cell_4"
+      locked TRUE
+    }
+  ]
+}
+DEF Black_Cross Solid {
+  translation -0.614 -0.0048 0.615
+  children [
+    DEF Black_Cross Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 0.9
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../solidworks/BlackCross.STL"
+        ]
+      }
+    }
+  ]
+  name "Black_Cross"
+  locked TRUE
+}
+DEF Boxes Group {
+  children [
+    DEF White_Box Solid {
+      translation 0.75 0.02 0.71
+      children [
+        DEF White_Box Shape {
+          appearance PBRAppearance {
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.04 0.04 0.04
+          }
+        }
+      ]
+      name "White_Box"
+      boundingObject USE White_Box
+      physics DEF Box_Ph Physics {
+        density 585
+      }
+    }
+    DEF Red_Box Solid {
+      translation 0.75 0.02 0.08
+      children [
+        DEF Red_Box Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.08 0.04 0.08
+          }
+        }
+      ]
+      name "Red_Box"
+      boundingObject USE Red_Box
+      physics USE Box_Ph
+    }
+    DEF Green_Box Solid {
+      translation 0.12 0.02 -0.55
+      children [
+        DEF Green_Box Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.06 0.04 0.06
+          }
+        }
+      ]
+      name "Green_Box"
+      boundingObject USE Green_Box
+      physics USE Box_Ph
+    }
+    DEF Blue_Box Solid {
+      translation 0.12 0.06 -0.55
+      children [
+        DEF Blue_Box Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 0.9
+            metalness 0
+          }
+          geometry Box {
+            size 0.04 0.04 0.04
+          }
+        }
+      ]
+      name "Blue_Box"
+      boundingObject USE Blue_Box
+      physics USE Box_Ph
+    }
+  ]
+}
+DEF Red_Lines Group {
+  children [
+    DEF Red_Line_1 Solid {
+      translation -1.1289 -0.0049 -0.56
+      children [
+        DEF Red_Line_Long Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineLong.STL"
+            ]
+          }
+        }
+      ]
+      name "Red_Line_1"
+      locked TRUE
+    }
+    DEF Red_Line_2 Solid {
+      translation 1.3613 -0.0049 0.07
+      rotation 0 1 0 1.5708
+      children [
+        USE Red_Line_Long
+      ]
+      name "Red Line 2"
+      locked TRUE
+    }
+    DEF Red_Line_3 Solid {
+      translation 0.1013 -0.0049 1.33
+      rotation 0 1 0 1.5708
+      children [
+        USE Red_Line_Long
+      ]
+      name "Red Line 3"
+      locked TRUE
+    }
+    DEF Red_Line_4 Solid {
+      translation 0.1 -0.0049 -0.645
+      rotation 0 1 0 1.5708
+      children [
+        DEF Red_Line_Medium Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineMedium.STL"
+            ]
+          }
+        }
+      ]
+      name "Red Line 4"
+      locked TRUE
+    }
+    DEF Red_Line_5 Solid {
+      translation 0.216 -0.0049 -0.56
+      rotation 0 -1 0 -5.307179586466759e-06
+      children [
+        DEF Red_Line_Medium Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineMedium.STL"
+            ]
+          }
+        }
+      ]
+      name "Red Line 5"
+      locked TRUE
+    }
+    DEF Red_Line_6 Solid {
+      translation 0.7312 -0.0049 0.615
+      rotation 0 1 0 1.5708
+      children [
+        DEF Red_Line_Short Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineShort.STL"
+            ]
+          }
+        }
+      ]
+      name "Red Line 6"
+      locked TRUE
+    }
+  ]
+}

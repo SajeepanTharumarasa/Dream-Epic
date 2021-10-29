@@ -1,0 +1,4 @@
+#VRML_OBJ R2021a utf8
+DirectionalLight {
+  direction 0 -1 0
+}
