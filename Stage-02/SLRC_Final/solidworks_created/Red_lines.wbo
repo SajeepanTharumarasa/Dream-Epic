@@ -1,0 +1,102 @@
+#VRML_OBJ R2021a utf8
+DEF Red_Lines Group {
+  children [
+    DEF Red_Line_1 Solid {
+      translation -1.1289 -0.0049 -0.56
+      children [
+        DEF Red_Line_Long Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineLong.STL"
+            ]
+          }
+        }
+      ]
+      name "Red_Line_1"
+      locked TRUE
+    }
+    DEF Red_Line_2 Solid {
+      translation 1.3613 -0.0049 0.07
+      rotation 0 1 0 1.5708
+      children [
+        USE Red_Line_Long
+      ]
+      name "Red Line 2"
+      locked TRUE
+    }
+    DEF Red_Line_3 Solid {
+      translation 0.1013 -0.0049 1.33
+      rotation 0 1 0 1.5708
+      children [
+        USE Red_Line_Long
+      ]
+      name "Red Line 3"
+      locked TRUE
+    }
+    DEF Red_Line_4 Solid {
+      translation 0.1 -0.0049 -0.645
+      rotation 0 1 0 1.5708
+      children [
+        DEF Red_Line_Medium Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineMedium.STL"
+            ]
+          }
+        }
+      ]
+      name "Red Line 4"
+      locked TRUE
+    }
+    DEF Red_Line_5 Solid {
+      translation 0.216 -0.0049 -0.56
+      rotation 0 -1 0 -5.307179586466759e-06
+      children [
+        DEF Red_Line_Medium Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineMedium.STL"
+            ]
+          }
+        }
+      ]
+      name "Red Line 5"
+      locked TRUE
+    }
+    DEF Red_Line_6 Solid {
+      translation 0.7312 -0.0049 0.615
+      rotation 0 1 0 1.5708
+      children [
+        DEF Red_Line_Short Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedLineShort.STL"
+            ]
+          }
+        }
+      ]
+      name "Red Line 6"
+      locked TRUE
+    }
+  ]
+}

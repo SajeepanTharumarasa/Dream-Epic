@@ -1,0 +1,48 @@
+#VRML_OBJ R2021a utf8
+DEF Red_Cells Group {
+  children [
+    DEF Cell_1 Solid {
+      translation -0.35 -0.0049 0.88
+      children [
+        DEF Cell Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.9
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../solidworks/RedCell.STL"
+            ]
+          }
+        }
+      ]
+      name "Cell_1"
+      locked TRUE
+    }
+    DEF Cell_2 Solid {
+      translation -0.8 -0.0049 0.88
+      children [
+        USE Cell
+      ]
+      name "Cell_2"
+      locked TRUE
+    }
+    DEF Cell_3 Solid {
+      translation -0.35 -0.0049 0.43
+      children [
+        USE Cell
+      ]
+      name "Cell_3"
+      locked TRUE
+    }
+    DEF Cell_4 Solid {
+      translation -0.8 -0.0049 0.43
+      children [
+        USE Cell
+      ]
+      name "Cell_4"
+      locked TRUE
+    }
+  ]
+}
