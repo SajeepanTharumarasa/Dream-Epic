@@ -3,8 +3,9 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.9856385834150833 -0.1307497196184288 -0.10686951718432305 5.936839116819569
-  position -1.8772708232293411 0.1175533826515638 0.1407678875321377
+  orientation 0.15386826350331717 0.9750700484431073 0.15988420220781732 4.482042192881487
+  position -2.573230814335443 0.24140061185795583 0.0110511849342647
+  follow "rectangle arena"
 }
 TexturedBackground {
 }
@@ -1276,7 +1277,7 @@ DEF Boxes Group {
       physics USE Box_Ph
     }
     DEF Red_Box_2 Solid {
-      translation -0.54 0.02 1.09
+      translation -2 0.02 0.19
       children [
         DEF Red_Box Shape {
           appearance PBRAppearance {
@@ -1383,38 +1384,44 @@ DirectionalLight {
   direction 0 -1 1
 }
 DEF Dream_Epic Robot {
-  translation -1.99712 0.0434415 -0.183796
-  rotation 0.000887692182916422 0.9999992060582262 -0.0008943631842910377 1.55373
+  translation -2 0.05 0
   children [
     DEF BODY Transform {
-      translation 0 -0.0175 0
       children [
         Camera {
-          translation 0 0 0.08
+          translation 0 0 0.11
           rotation -1 0 0 1.5707
           children [
             Shape {
               appearance PBRAppearance {
               }
               geometry Box {
-                size 0.01 0.01 0.01
+                size 0.01 0.02 0.01
               }
             }
           ]
           name "color_sensor"
         }
-        DEF body_box Shape {
-          appearance PBRAppearance {
-            baseColor 1 1 0
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.1 0.01 0.16
+        DEF Body Solid {
+          children [
+            DEF body_box Shape {
+              appearance PBRAppearance {
+                baseColor 1 1 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.16 0.01 0.2
+              }
+            }
+          ]
+          name "solid(7)"
+          boundingObject USE body_box
+          physics Physics {
           }
         }
         DEF IR_Panel Transform {
-          translation 0 0.0175 0.01
+          translation 0 0.01 0.06
           children [
             DistanceSensor {
               translation 0.045 -0.02 0.01
@@ -1610,165 +1617,81 @@ DEF Dream_Epic Robot {
             }
           ]
         }
-        DEF _caster_wheel Solid {
-          translation 0 -0.01 0.05
+        DEF caster_wheel_left Solid {
+          translation 0.04 -0.02 0.05
           children [
-            Shape {
+            DEF caster_solid Shape {
               appearance PBRAppearance {
                 roughness 1
                 metalness 0
               }
               geometry Cylinder {
-                height 0.01
+                height 0.03
                 radius 0.015
               }
             }
           ]
-          name "solid(3)"
-        }
-      ]
-    }
-    Solid {
-      translation 0 -0.01 0.05
-      children [
-        Shape {
-          appearance PBRAppearance {
-          }
-          geometry Box {
-            size 0.04 0.01 0.04
+          name "solid(2)"
+          boundingObject USE caster_solid
+          physics Physics {
           }
         }
-        Solid {
-          translation 0.01 0.04 0
+        DEF caster_wheel_left Solid {
+          translation -0.04 -0.02 0.05
           children [
-            Shape {
+            DEF caster_solid Shape {
               appearance PBRAppearance {
+                roughness 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.03
+                radius 0.015
+              }
+            }
+          ]
+          name "solid(5)"
+          boundingObject USE caster_solid
+          physics Physics {
+          }
+        }
+        DEF ARM Solid {
+          translation 0 0.07 0
+          children [
+            DEF bar_1 Shape {
+              appearance PBRAppearance {
+                baseColor 0.1 1 1
+                metalness 0
               }
               geometry Box {
-                size 0.02 0.08 0.02
+                size 0.02 0.135 0.02
               }
             }
           ]
-        }
-        SliderJoint {
-          jointParameters JointParameters {
-            axis 0 1 0
-          }
-          device [
-            LinearMotor {
-              name "l_motor"
-            }
-          ]
-          endPoint Solid {
-            translation -0.005 0.015 0.03
-            children [
-              Shape {
-                appearance PBRAppearance {
-                }
-                geometry Box {
-                  size 0.01 0.02 0.08
-                }
-              }
-              Solid {
-                translation 0 -0.02 0.04
-                children [
-                  Shape {
-                    appearance PBRAppearance {
-                    }
-                    geometry Box {
-                      size 0.01 0.02 0.04
-                    }
-                  }
-                ]
-              }
-              Solid {
-                translation 0 -0.02 0.06
-                children [
-                  Shape {
-                    appearance PBRAppearance {
-                    }
-                    geometry Box {
-                      size 0.1 0.02 0.01
-                    }
-                  }
-                  SliderJoint {
-                    jointParameters JointParameters {
-                      axis 1 0 0
-                    }
-                    device [
-                      LinearMotor {
-                        name "g_l"
-                      }
-                    ]
-                    endPoint Solid {
-                      translation 0.045 0 0.03
-                      children [
-                        DEF hand2 Shape {
-                          appearance PBRAppearance {
-                          }
-                          geometry Box {
-                            size 0.01 0.02 0.05
-                          }
-                        }
-                      ]
-                      boundingObject USE hand2
-                      physics Physics {
-                      }
-                    }
-                  }
-                  SliderJoint {
-                    jointParameters JointParameters {
-                      axis 1 0 0
-                    }
-                    device [
-                      LinearMotor {
-                        name "g_r"
-                      }
-                    ]
-                    endPoint Solid {
-                      translation -0.045 0 0.03
-                      children [
-                        DEF hand Shape {
-                          appearance PBRAppearance {
-                            baseColor 1 0 1
-                          }
-                          geometry Box {
-                            size 0.01 0.02 0.05
-                          }
-                        }
-                      ]
-                      name "solid(1)"
-                      boundingObject USE hand
-                      physics Physics {
-                      }
-                    }
-                  }
-                ]
-                name "solid(1)"
-              }
-            ]
-            name "solid(1)"
+          name "solid(6)"
+          boundingObject USE bar_1
+          physics Physics {
           }
         }
       ]
-      name "solid(4)"
     }
     DEF Left_Wheel HingeJoint {
       jointParameters HingeJointParameters {
         position 116.33840745598684
-        anchor 0.06 -0.02 -0.05
+        anchor 0.09 -0.02 -0.07
       }
       device [
         RotationalMotor {
           name "left_motor"
+          maxTorque 1
         }
         PositionSensor {
           name "left_ps"
         }
       ]
       endPoint Solid {
-        translation 0.06 -0.02 -0.05
-        rotation 0.7069507764964802 -0.7063880366831419 -0.035164488364827294 3.2119486214909587
+        translation 0.09000000140321052 -0.019996293684578455 -0.07000021994808629
+        rotation -0.7073748642599917 0.7068116430670068 0.0061727334363433205 3.1292372540060795
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -1778,7 +1701,7 @@ DEF Dream_Epic Robot {
             }
             geometry Cylinder {
               height 0.02
-              radius 0.02
+              radius 0.032
             }
           }
         ]
@@ -1790,7 +1713,7 @@ DEF Dream_Epic Robot {
     DEF Right_Wheel HingeJoint {
       jointParameters HingeJointParameters {
         position 91.40344941748836
-        anchor -0.06 -0.02 -0.05
+        anchor -0.09 -0.02 -0.07
       }
       device [
         RotationalMotor {
@@ -1801,8 +1724,8 @@ DEF Dream_Epic Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06 -0.02 -0.05
-        rotation 0.7034593658374622 -0.7028994052215549 -0.10524897507690875 3.351484329487061
+        translation -0.08999999859788743 -0.019996309786706575 -0.07000021576214616
+        rotation -0.7053346183721572 0.7047730086201288 0.07614514066134002 2.9894748371913384
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -1812,7 +1735,7 @@ DEF Dream_Epic Robot {
             }
             geometry Cylinder {
               height 0.02
-              radius 0.02
+              radius 0.032
             }
           }
         ]
@@ -1822,35 +1745,208 @@ DEF Dream_Epic Robot {
         }
       }
     }
-    DEF caster_wheel BallJoint {
+    DEF Vertical_Slider SliderJoint {
+      jointParameters JointParameters {
+        axis 0 1 0
+      }
+      device [
+        LinearMotor {
+          name "vr_arm_motor"
+        }
+        PositionSensor {
+          name "vr_arm_ps"
+        }
+      ]
+      endPoint Solid {
+        translation -0.015 0.12 0.09
+        children [
+          Transform {
+            children [
+              DEF bar_2 Shape {
+                appearance PBRAppearance {
+                  baseColor 1 0.4 1
+                }
+                geometry Box {
+                  size 0.01 0.02 0.2
+                }
+              }
+            ]
+          }
+          HingeJoint {
+            jointParameters HingeJointParameters {
+              anchor 0.01 -0.05 0.09
+            }
+            device [
+              PositionSensor {
+                name "arm_rotate_ps"
+              }
+              RotationalMotor {
+                name "arm_rotate_motor"
+              }
+            ]
+            endPoint Solid {
+              translation 0.01 -0.015 0.09
+              rotation 1 0 0 0
+              children [
+                DEF gripper Transform {
+                  children [
+                    DEF bar_3 Shape {
+                      appearance PBRAppearance {
+                        baseColor 0 0.6 0.3
+                      }
+                      geometry Box {
+                        size 0.01 0.05 0.02
+                      }
+                    }
+                    Solid {
+                      translation 0 -0.03 0
+                      children [
+                        DEF gr_base Transform {
+                          children [
+                            DEF bar_4 Shape {
+                              appearance PBRAppearance {
+                              }
+                              geometry Box {
+                                size 0.11 0.01 0.02
+                              }
+                            }
+                          ]
+                        }
+                        DEF right_gr SliderJoint {
+                          jointParameters JointParameters {
+                            axis 1 0 0
+                          }
+                          device [
+                            LinearMotor {
+                              name "right_arm_gr_motor"
+                            }
+                            PositionSensor {
+                              name "right_arm_gr_ps"
+                            }
+                          ]
+                          endPoint Solid {
+                            translation 0.05 -0.025 0
+                            children [
+                              DEF bar_gr_r Shape {
+                                appearance PBRAppearance {
+                                  baseColor 0.1 0.9 1
+                                }
+                                geometry Box {
+                                  size 0.01 0.04 0.02
+                                }
+                              }
+                            ]
+                            boundingObject USE bar_gr_r
+                            physics Physics {
+                            }
+                          }
+                        }
+                        DEF left_gr SliderJoint {
+                          jointParameters JointParameters {
+                            axis 1 0 0
+                          }
+                          device [
+                            DEF left_arm_gr_motor LinearMotor {
+                              name "left_arm_gr_motor"
+                            }
+                            PositionSensor {
+                              name "left_arm_gr_ps"
+                            }
+                          ]
+                          endPoint Solid {
+                            translation -0.05 -0.025 0
+                            children [
+                              DEF bar_gr_l Shape {
+                                appearance PBRAppearance {
+                                  baseColor 0.1 0.9 1
+                                }
+                                geometry Box {
+                                  size 0.01 0.04 0.02
+                                }
+                              }
+                            ]
+                            name "solid(1)"
+                            boundingObject USE bar_gr_l
+                            physics Physics {
+                            }
+                          }
+                        }
+                      ]
+                      boundingObject USE bar_4
+                      physics Physics {
+                      }
+                    }
+                  ]
+                }
+              ]
+              boundingObject USE bar_3
+              physics Physics {
+              }
+            }
+          }
+        ]
+        name "solid(8)"
+        boundingObject USE bar_2
+        physics Physics {
+          density -1
+          mass 0.3
+        }
+      }
+    }
+    BallJoint {
       jointParameters BallJointParameters {
-        position -16.89555272933176
-        anchor 0 -0.03 0.05
+        anchor 0.04 -0.042 0.05
       }
       jointParameters2 JointParameters {
-        position 1.129589800750844
       }
       jointParameters3 JointParameters {
-        position -7.499017045330614
         axis 0 1 0
       }
       endPoint Solid {
-        translation 0 -0.03 0.05
-        rotation 0.28061513203419874 0.8349659078322 0.47337836920520476 3.978208907041385
+        translation 0.04 -0.042 0.05
+        rotation 0.4123114712691863 0.7449423120287334 0.52446182168879 3.636890803817238
         children [
-          DEF caster Shape {
+          DEF ball Shape {
             appearance PBRAppearance {
-              baseColor 0 0 0
               roughness 1
               metalness 0
             }
             geometry Sphere {
-              radius 0.01
+              radius 0.008
             }
           }
         ]
-        name "solid(2)"
-        boundingObject USE caster
+        name "solid(3)"
+        boundingObject USE ball
+        physics Physics {
+        }
+      }
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor -0.04 -0.042 0.05
+      }
+      jointParameters2 JointParameters {
+      }
+      jointParameters3 JointParameters {
+        axis 0 1 0
+      }
+      endPoint Solid {
+        translation -0.04 -0.042 0.05
+        rotation 0.9478309780750039 0.15289925332066925 0.27971102111887386 1.8368020098891396
+        children [
+          DEF ball Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Sphere {
+              radius 0.008
+            }
+          }
+        ]
+        name "solid(4)"
+        boundingObject USE ball
         physics Physics {
         }
       }

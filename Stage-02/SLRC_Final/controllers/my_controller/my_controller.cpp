@@ -16,9 +16,10 @@ int TIME_STEP = 32;
 Motor *leftMotor = robot->getMotor("left_motor");
 Motor *rightMotor = robot->getMotor("right_motor");
 
-Motor *l_motor = robot->getMotor("l_motor");
-Motor *g_r = robot->getMotor("g_r");
-Motor *g_l = robot->getMotor("g_l");
+Motor *arm_vr_motor = robot->getMotor("vr_arm_motor");
+Motor *arm_rotate_motor = robot->getMotor("arm_rotate_motor");
+Motor *g_r_motor = robot->getMotor("right_arm_gr_motor");
+Motor *g_l_motor = robot->getMotor("left_arm_gr_motor");
 
 double l_speed = 0;         //  motor speed 
 double r_speed = 0;         
@@ -37,6 +38,11 @@ string colors[4] = { "gray","red","green","blue" };
 PositionSensor* leftPs = robot->getPositionSensor ("left_ps");
 PositionSensor* rightPs = robot->getPositionSensor ("right_ps");
 
+PositionSensor* vr_arm_ps = robot->getPositionSensor ("vr_arm_ps");
+PositionSensor* arm_rotate_ps = robot->getPositionSensor ("arm_rotate_ps");
+PositionSensor* left_arm_gr_ps = robot->getPositionSensor ("left_arm_gr_ps");
+PositionSensor* right_arm_gr_ps = robot->getPositionSensor ("right_arm_gr_ps");
+
 // PID controller parameters
 double previous_error=0.0;
 double kp=10;  //3
@@ -50,6 +56,7 @@ float wheel_radius= 0.02;
 float n=(robot_width/wheel_radius)/2*3.1416;          // 90 degree turn wheel rotation in radian
 
 
+double move_dis=0;
 ///////////## Define the Functions ##/////////////////
 
 int getColorAt (int x, int y);
@@ -60,21 +67,74 @@ void turn_90(int dir);
 void move_forward(double dis);
 
 ///////////////////////////////////////////////////////
+void grip_squre(int grib,double dis){
+      int l_gr = left_arm_gr_ps->getValue ();
+      int r_gr = right_arm_gr_ps->getValue ();
+      
+      int d=0;
+      
+      if (grib==0){
+         d=-1;
+         dis=move_dis;}
+      else{
+         d=1;}
+        
+      double time= dis;
+      double s_time = robot->getTime();
+      
+      while(robot->step(TIME_STEP) != -1){
+        double c_time = robot->getTime();
+        double time_diff =c_time-s_time-time;
+        
+        double leftPsVal = left_arm_gr_ps->getValue ();
+        double rightPsVal = right_arm_gr_ps->getValue ();
+        
+        
+        move_dis=(leftPsVal-l_gr)*100;
+        
+        if(time_diff<0){
+          g_r_motor->setVelocity(-d*0.01);
+          g_l_motor->setVelocity(d*0.01);}
+         else{
+           g_r_motor->setVelocity(0);
+           g_l_motor->setVelocity(0);
+           break;}       
+       }
+       
+       
+}
+
+
+void lift_arm(double dist){
+      double vr_ps = vr_arm_ps->getValue ();
+      
+      while(robot->step(TIME_STEP) != -1){
+        double vr_ps_val = vr_arm_ps->getValue ();
+        double mov_dis=(vr_ps_val-vr_ps)*100;
+        
+        if(abs(mov_dis)<abs(dist)){
+           arm_vr_motor->setVelocity(dist*0.01);}
+        else{
+           arm_vr_motor->setVelocity(0);
+           break;
+         }       
+       }     
+}
 
 int main(int argc, char **argv) {
       setup();
 
       leftMotor->setVelocity(0);
-      l_motor->setVelocity(0.0);
       rightMotor->setVelocity(0.0); 
-      g_l->setVelocity(0.0); 
-      g_r->setVelocity(0.0); 
       
       while (robot->step(TIME_STEP) != -1) {
-        //l_motor->setVelocity(0.01);
-        g_l->setVelocity(-0.01); 
-        g_r->setVelocity(0.01); 
-        continue;
+        // rightMotor->setVelocity(-5);
+        // leftMotor->setVelocity(5);
+        lift_arm(-7); 
+        grip_squre(1,2);
+        lift_arm(7);
+        //grip_squre(0,2);
+        break;
         getReading();
         if((reading[6] || reading[7])){
              turn_90(-1);
@@ -84,7 +144,6 @@ int main(int argc, char **argv) {
          else{
             PID();
            }
-         //PID(); 
         
       };
 
@@ -206,14 +265,26 @@ void setup(){
       leftMotor->setPosition(INFINITY);
       rightMotor->setPosition(INFINITY);
       
-      l_motor->setPosition(INFINITY);
-      g_r->setPosition(INFINITY);
-      g_l->setPosition(INFINITY);
+      arm_vr_motor->setPosition(INFINITY);
+      arm_rotate_motor->setPosition(INFINITY);
+      g_r_motor->setPosition(INFINITY);
+      g_l_motor->setPosition(INFINITY);
+      
+      arm_vr_motor->setVelocity(0);
+      arm_rotate_motor->setVelocity(0.0);
+      g_r_motor->setVelocity(0);
+      g_l_motor->setVelocity(0.0);
       
       camera = robot->getCamera ("color_sensor");
       camera->enable (TIME_STEP);
       
       leftPs->enable (TIME_STEP);
       rightPs->enable (TIME_STEP);
+      
+      vr_arm_ps->enable (TIME_STEP);
+      arm_rotate_ps->enable (TIME_STEP);
+      left_arm_gr_ps->enable (TIME_STEP);
+      right_arm_gr_ps->enable (TIME_STEP);
+      
 }
 
