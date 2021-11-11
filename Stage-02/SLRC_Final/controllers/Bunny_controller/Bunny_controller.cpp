@@ -113,7 +113,8 @@ void reciever(){
   }
 int obstacle_detection(){
   return 0;}
-
+int junction_detect(){
+  return 0;}
 
 int main(int argc, char **argv) {
       setup();
@@ -127,8 +128,7 @@ int main(int argc, char **argv) {
               getReading();
               junction=junction_detect();
                     
-              if(junction>0){ 
-                  turn_90(1);}
+              if(junction>0){ }
               else{  PID();}
               } 
           }
@@ -172,7 +172,7 @@ void grip_squre(int grib,double dis){
        }       
 }
 
-int junction_detect(){
+int Junction_detect(){
       if(reading[6]==0 && reading[7]==1 && (reading[2]==1 || reading[3]==1)){
           return 1; } // left turn junction detected
       else if(reading[6]==1 && reading[7]==1 && (reading[2]==1 || reading[3]==1)){

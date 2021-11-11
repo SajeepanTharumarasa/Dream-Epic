@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.15386826350331717 0.9750700484431073 0.15988420220781732 4.482042192881487
-  position -2.573230814335443 0.24140061185795583 0.0110511849342647
+  orientation -0.16062538651008323 0.9448842975754667 0.28529484643751185 2.060419000957504
+  position -1.310957326487512 0.32763012243961515 -0.3847290024747271
   follow "rectangle arena"
 }
 TexturedBackground {
@@ -1164,7 +1164,7 @@ DEF Boxes Group {
       }
     }
     DEF White_Box_2 Solid {
-      translation -1.8 0.02 -0.16
+      translation -1.98 0.02 0.18
       children [
         DEF White_Box Shape {
           appearance PBRAppearance {
@@ -1277,7 +1277,7 @@ DEF Boxes Group {
       physics USE Box_Ph
     }
     DEF Red_Box_2 Solid {
-      translation -2 0.02 0.19
+      translation -2 0.02 -0.1
       children [
         DEF Red_Box Shape {
           appearance PBRAppearance {
@@ -1383,13 +1383,13 @@ DirectionalLight {
 DirectionalLight {
   direction 0 -1 1
 }
-DEF Dream_Epic Robot {
-  translation -2 0.05 0
+DEF Bobby Robot {
+  translation -1.78 0.05 -0.08
   children [
     DEF BODY Transform {
       children [
         Camera {
-          translation 0 0 0.11
+          translation 0 -0.025 0.11
           rotation -1 0 0 1.5707
           children [
             Shape {
@@ -1401,6 +1401,11 @@ DEF Dream_Epic Robot {
             }
           ]
           name "color_sensor"
+          recognitionColors [
+            0 0 0
+          ]
+          width 9
+          height 9
         }
         DEF Body Solid {
           children [
@@ -1420,8 +1425,13 @@ DEF Dream_Epic Robot {
           physics Physics {
           }
         }
+        Emitter {
+        }
+        Receiver {
+          channel 1
+        }
         DEF IR_Panel Transform {
-          translation 0 0.01 0.06
+          translation 0 -0.01 0.06
           children [
             DistanceSensor {
               translation 0.045 -0.02 0.01
@@ -1617,6 +1627,240 @@ DEF Dream_Epic Robot {
             }
           ]
         }
+        DEF Distance_sensor_Panel Transform {
+          translation 0 -0.02 0.07
+          rotation -1 0 0 1.54
+          children [
+            Solid {
+              translation 0 -0.015 0.02
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                  }
+                  geometry Box {
+                    size 0.16 0.01 0.03
+                  }
+                }
+              ]
+              name "solid(9)"
+            }
+            DistanceSensor {
+              translation 0.05 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_L4"
+            }
+            DistanceSensor {
+              translation 0.038 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_L3"
+              type "infra-red"
+            }
+            DistanceSensor {
+              translation 0.028 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_L2"
+              type "infra-red"
+            }
+            DistanceSensor {
+              translation 0.018 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_L1"
+              type "infra-red"
+            }
+            DistanceSensor {
+              translation 0 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_C"
+              type "infra-red"
+            }
+            DistanceSensor {
+              translation -0.018 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_R1"
+              type "infra-red"
+            }
+            DistanceSensor {
+              translation -0.028 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_R2"
+              type "infra-red"
+            }
+            DistanceSensor {
+              translation -0.038 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_R3"
+              type "infra-red"
+            }
+            DistanceSensor {
+              translation -0.05 -0.02 0.01
+              rotation 0 0 1 -1.57
+              children [
+                Solid {
+                  rotation 0 0 1 1.57
+                  children [
+                    Shape {
+                      appearance PBRAppearance {
+                        baseColor 1 0 1
+                        roughness 1
+                        metalness 0
+                      }
+                      geometry Capsule {
+                        height 0.01
+                        radius 0.002
+                      }
+                    }
+                  ]
+                }
+              ]
+              name "D_R4"
+              type "infra-red"
+            }
+          ]
+        }
         DEF caster_wheel_left Solid {
           translation 0.04 -0.02 0.05
           children [
@@ -1725,7 +1969,7 @@ DEF Dream_Epic Robot {
       ]
       endPoint Solid {
         translation -0.08999999859788743 -0.019996309786706575 -0.07000021576214616
-        rotation -0.7053346183721572 0.7047730086201288 0.07614514066134002 2.9894748371913384
+        rotation -0.7053346183721572 0.7047730086201288 0.07614514066134004 2.9894748371913384
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -1785,7 +2029,7 @@ DEF Dream_Epic Robot {
               }
             ]
             endPoint Solid {
-              translation 0.01 -0.015 0.09
+              translation 0.01 -0.015 0.09000000000718239
               rotation 1 0 0 0
               children [
                 DEF gripper Transform {
@@ -1876,6 +2120,20 @@ DEF Dream_Epic Robot {
                       physics Physics {
                       }
                     }
+                    Camera {
+                      translation 0 -0.02 0.02
+                      rotation -1 0 0 1.5707
+                      children [
+                        Shape {
+                          appearance PBRAppearance {
+                          }
+                          geometry Box {
+                            size 0.01 0.02 0.01
+                          }
+                        }
+                      ]
+                      name "color_sensor_arm"
+                    }
                   ]
                 }
               ]
@@ -1904,7 +2162,7 @@ DEF Dream_Epic Robot {
       }
       endPoint Solid {
         translation 0.04 -0.042 0.05
-        rotation 0.4123114712691863 0.7449423120287334 0.52446182168879 3.636890803817238
+        rotation 0.22958487638152952 0.22092433456597368 0.947883549247195 3.022045844890719
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -1933,7 +2191,7 @@ DEF Dream_Epic Robot {
       }
       endPoint Solid {
         translation -0.04 -0.042 0.05
-        rotation 0.9478309780750039 0.15289925332066925 0.27971102111887386 1.8368020098891396
+        rotation 0.638100618787555 0.7675273309455481 -0.06106878543529731 1.6888387103115605
         children [
           DEF ball Shape {
             appearance PBRAppearance {
