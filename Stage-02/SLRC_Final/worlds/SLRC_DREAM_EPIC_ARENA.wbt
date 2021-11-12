@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.16062538651008323 0.9448842975754667 0.28529484643751185 2.060419000957504
-  position -1.310957326487512 0.32763012243961515 -0.3847290024747271
+  orientation 0.41110965822502854 -0.6974404333137899 -0.586997181333244 4.099720348082778
+  position -1.3553842459163905 2.0370438186647863 -0.18290990702305093
   follow "rectangle arena"
 }
 TexturedBackground {
@@ -1277,7 +1277,7 @@ DEF Boxes Group {
       physics USE Box_Ph
     }
     DEF Red_Box_2 Solid {
-      translation -2 0.02 -0.1
+      translation -2.06 0.02 -0.13
       children [
         DEF Red_Box Shape {
           appearance PBRAppearance {
@@ -1295,7 +1295,7 @@ DEF Boxes Group {
       physics USE Box_Ph
     }
     DEF Green_Box_1 Solid {
-      translation -1.16 0.02 -0.16
+      translation -1.97 0.02 -0.1
       children [
         DEF Green_Box Shape {
           appearance PBRAppearance {
@@ -1331,7 +1331,7 @@ DEF Boxes Group {
       physics USE Box_Ph
     }
     DEF Blue_Box_1 Solid {
-      translation -1.16 0.06 -0.16
+      translation -1.86 0.06 -0.23
       children [
         DEF Blue_Box Shape {
           appearance PBRAppearance {
@@ -1384,7 +1384,7 @@ DirectionalLight {
   direction 0 -1 1
 }
 DEF Bobby Robot {
-  translation -1.78 0.05 -0.08
+  translation -1.8 0.05 -0.81
   children [
     DEF BODY Transform {
       children [
@@ -1645,7 +1645,7 @@ DEF Bobby Robot {
               name "solid(9)"
             }
             DistanceSensor {
-              translation 0.05 -0.02 0.01
+              translation 0.06 -0.02 0.01
               rotation 0 0 1 -1.57
               children [
                 Solid {
@@ -1666,6 +1666,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_L4"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
               translation 0.038 -0.02 0.01
@@ -1689,7 +1693,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_L3"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
               translation 0.028 -0.02 0.01
@@ -1713,7 +1720,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_L2"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
               translation 0.018 -0.02 0.01
@@ -1737,7 +1747,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_L1"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
               translation 0 -0.02 0.01
@@ -1761,7 +1774,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_C"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
               translation -0.018 -0.02 0.01
@@ -1785,7 +1801,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_R1"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
               translation -0.028 -0.02 0.01
@@ -1809,7 +1828,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_R2"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
               translation -0.038 -0.02 0.01
@@ -1833,10 +1855,13 @@ DEF Bobby Robot {
                 }
               ]
               name "D_R3"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
             DistanceSensor {
-              translation -0.05 -0.02 0.01
+              translation -0.07 -0.02 0.01
               rotation 0 0 1 -1.57
               children [
                 Solid {
@@ -1857,7 +1882,10 @@ DEF Bobby Robot {
                 }
               ]
               name "D_R4"
-              type "infra-red"
+              lookupTable [
+                0 0 0
+                0.3 1000 0
+              ]
             }
           ]
         }
@@ -2162,7 +2190,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation 0.04 -0.042 0.05
-        rotation 0.22958487638152952 0.22092433456597368 0.947883549247195 3.022045844890719
+        rotation -0.6752598785466083 -0.6299812018967139 -0.38359846412882237 2.857948407056615
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -2191,7 +2219,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation -0.04 -0.042 0.05
-        rotation 0.638100618787555 0.7675273309455481 -0.06106878543529731 1.6888387103115605
+        rotation 0.46956380566607697 0.8216398966440501 -0.3231372969051164 4.149340315498696
         children [
           DEF ball Shape {
             appearance PBRAppearance {

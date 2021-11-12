@@ -34,6 +34,7 @@ int reading[8] ={0,0,0,0,0,0,0,0};
 DistanceSensor *ob_ds[9];
 char ob_dsNames[9][10] = {"D_L4","D_L3","D_L2","D_L1","D_C","D_R1","D_R2","D_R3","D_R4"};
 int ob_reading[9] ={0,0,0,0,0,0,0,0,0};
+int ob_reading_ds[9] ={0,0,0,0,0,0,0,0,0};
 // line detection color sensor parameter
 Camera* camera;
 Camera* camera_arm;
@@ -88,6 +89,9 @@ int junction_detect();
 int obstacle_detection();
 void emmiter();
 void reciever();
+void ds_getReading();
+double ob_PID();
+
 ///////////////////////////////////////////////////////
 void emmiter(){
 }
@@ -120,7 +124,13 @@ int main(int argc, char **argv) {
       
       while (task_completed!=1) {
         robot->step(TIME_STEP);                           // step up the time
-        vector<int> s ={1,2,3};
+        ds_getReading();
+        // for (int i = 0; i < 9; i++) {
+            // std::cout << ob_dsNames[i] << " " <<ob_reading_ds[i]<<std::endl;
+        // }
+        // break;
+        ob_PID();
+        continue;
         if(maze_solved==0){
             if(obstacle_detection() !=0){}                // obstacle detection to avoding collision 
             else{
@@ -273,6 +283,17 @@ void getReading(){
       return;    
 }  
 
+void ds_getReading(){
+    for (int i = 0; i < 9; i++) {
+        ob_reading_ds[i]=ob_ds[i]->getValue();
+      if (ob_ds[i]->getValue()>990){
+        ob_reading[i]=0;}
+      else{
+        ob_reading[i]=1;}
+     }
+      return;    
+}  
+
 // PID controlling for perfect ling following
 double PID(){
     double error = 0.0;
@@ -303,6 +324,35 @@ double PID(){
     return 0;
   }
   
+ // PID controlling for perfect ling following
+double ob_PID(){
+    double error = 0.0;
+    int coefficient[9]= {-4,-3,-2,-1,0,1,2,3,4};
+ 
+    for (int i = 0; i < 9; i++) {
+      error += -coefficient[i]*ob_reading_ds[i];
+      } 
+   std::cout << " t" << error<<std::endl;
+    double P = kp*error;
+    double I = Integral+(ki*error);
+    double D = kd*(error-previous_error);
+    double correction = (P+I+D)/100;
+    std::cout << " correction" << correction<<std::endl;
+    l_speed = (5+correction)/5;
+    r_speed = (5-correction)/5;
+    
+    if (l_speed<0.0)  {l_speed=0;}
+    else if (l_speed>10.0) {l_speed=10.0;}
+    if (r_speed<0.0)  {r_speed=0;}
+    else if (r_speed>10.0) {r_speed=10.0;}
+    
+    leftMotor->setVelocity(l_speed);
+    rightMotor->setVelocity(r_speed);
+    
+    Integral=I;
+    previous_error=error;
+    return 0;
+  }
 /// initial setup of the motor and sensors.
 void setup(){
       for (int i = 0; i < 8; i++) {
