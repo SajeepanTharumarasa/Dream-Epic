@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.033829075459709514 -0.9854328509022137 -0.16666640338195554 2.9164620415869282
-  position -0.4137878924861777 0.4914919007811298 -0.9908273324838197
+  orientation 0.29805048872637097 -0.7810874282046861 -0.5486969433763602 3.9969071280620776
+  position -2.2307778896039916 2.305980234507032 1.539872516517049
   follow "rectangle arena"
 }
 TexturedBackground {
@@ -1384,7 +1384,8 @@ DirectionalLight {
   direction 0 -1 1
 }
 DEF Bobby Robot {
-  translation -1.8 0.05 -0.81
+  translation -3.36 0.05 1.72
+  rotation 0 1 0 1.5708
   children [
     DEF BODY Transform {
       children [
@@ -1963,8 +1964,8 @@ DEF Bobby Robot {
         }
       ]
       endPoint Solid {
-        translation 0.09000000140321052 -0.019996293684578455 -0.07000021994808629
-        rotation -0.7073748642599917 0.7068116430670068 0.0061727334363433205 3.1292372540060795
+        translation 0.09000000140321052 -0.019996293684578458 -0.07000021994808629
+        rotation -0.7073748642599916 0.7068116430670072 0.006172733436343381 3.12923725400608
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -1998,7 +1999,7 @@ DEF Bobby Robot {
       ]
       endPoint Solid {
         translation -0.08999999859788743 -0.019996309786706575 -0.07000021576214616
-        rotation -0.7053346183721572 0.7047730086201288 0.07614514066134004 2.9894748371913384
+        rotation -0.7053346183721572 0.7047730086201288 0.07614514066134002 2.9894748371913384
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
@@ -2058,7 +2059,7 @@ DEF Bobby Robot {
               }
             ]
             endPoint Solid {
-              translation 0.01 -0.015 0.09000000000718239
+              translation 0.01 -0.015 0.09000000001724136
               rotation 1 0 0 0
               children [
                 DEF gripper Transform {
@@ -2191,7 +2192,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation 0.04 -0.042 0.05
-        rotation 0.8118471316602163 -0.5679448889687224 0.1354357335025919 2.691993800662011
+        rotation 0.7850303925162929 -0.5917832585744662 0.18308429123412392 2.5450371993712007
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -2220,7 +2221,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation -0.04 -0.042 0.05
-        rotation -0.8901375037179559 0.1326061131362895 -0.4359711495427786 2.655428053961037
+        rotation -0.8672821600414166 0.17580981052148995 -0.4657387308333853 2.897287266520607
         children [
           DEF ball Shape {
             appearance PBRAppearance {

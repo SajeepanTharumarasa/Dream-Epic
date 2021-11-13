@@ -96,6 +96,7 @@ void emmiter();                                 // emmit the message signal to b
 void reciever();                                // recieve the signal from bunny                        
 double ob_PID();                                // align the robot with object
 int bottom_square_size();                       // fing the detected bottom squre size
+void navi_s_m(int from , int to);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv) {
       setup();
@@ -103,6 +104,8 @@ int main(int argc, char **argv) {
       while (task_completed!=1) {
         robot->step(TIME_STEP);                           // step up the time
         ds_getReading();
+        navi_s_m(1,3);
+        continue;
         if(maze_solved==0){
             if(obstacle_detection() !=0){}                // obstacle detection to avoding collision 
             else{
@@ -165,8 +168,83 @@ void reciever(){
        } 
   }
 int obstacle_detection(){
-  return 0;}
+      if(ob_sum>0){                               // obstacle detected in 30cm range
+          leftMotor->setVelocity(0);
+          rightMotor->setVelocity(0);
+          ds_getReading(); 
+          
+          int pre_readings[8];
+          for (int i = 0; i < 8; i++){
+              pre_readings[i]=ob_reading_ds[i];
+          }
+         
+          int steps=0;
+          
+          // check the obstacle is other robot or not          
+          while(steps<10){
+              robot->step(TIME_STEP);  
+              ds_getReading();
+              for (int i = 0; i < 8; i++){
+                  if(pre_readings[i]!=ob_reading_ds[i]){
+                      return 1;}
+               }  
+           }
+           return 2;
 
+           // move towords object
+           // grib the oblect
+           // switch back to line
+           // move to previous junction          
+      }
+      return 0;
+      }
+//return values 1--> robot// 2--> object // 3--> normal junction // 4--> white patch // 5--> inverted patch
+int move_until_next_decision_point(){
+         // release from next current junction point
+         while(robot->step(TIME_STEP) != -1){
+             getReading();
+             if(junction_detect()>0){
+                 leftMotor->setVelocity(max_speed);
+                 rightMotor->setVelocity(max_speed);
+             }
+             else{break;}
+          }
+          
+        // move the robot 
+        while(robot->step(TIME_STEP) != -1){
+              int object=obstacle_detection();
+              getReading();
+              if(object>0){
+                  return object;}
+              else{
+                  int jun = junction_detect();
+                  if(jun>0){
+                        move_forward(4);
+                        if(reading[6]==1 && reading[7]==1 && (reading[2]==1 || reading[3]==1)){
+                               move_forward(-4);
+                               return 4;}
+                        move_forward(-4);
+                        return jun;
+                      }
+                  else{
+                        PID();
+                      }              
+                  }
+        
+        }
+        return 0;     
+}
+void navi_s_m(int from , int to){
+           // 1--> start point // 2--> intermediate patch // 3--> matrix origin point
+        move_until_next_decision_point();
+        move_forward(14);
+        if((from-to)==-1){
+            turn_90(-1);}
+        else if((from-to)==1){
+            turn_90(1);}
+        move_until_next_decision_point();  
+
+}
 void grip_squre(int grib,double dis){
       int l_gr = left_arm_gr_ps->getValue ();
       int r_gr = right_arm_gr_ps->getValue ();
@@ -202,13 +280,15 @@ void grip_squre(int grib,double dis){
 
 int junction_detect(){
       if(reading[6]==0 && reading[7]==1 && (reading[2]==1 || reading[3]==1)){
-          return 1; } // left turn junction detected
+          return 3; } // left turn junction detected
       else if(reading[6]==1 && reading[7]==1 && (reading[2]==1 || reading[3]==1)){
-          return 2;}  // white patch or centered junction detected
+          
+          return 3;}  // white centered junction detected
       else if(reading[6]==1 && reading[7]==0 && (reading[2]==1 || reading[3]==1)){
           return 3;}  // right turn junction detected
       else if(reading[6]==1 && reading[7]==1 && (reading[2]==0 || reading[3]==0)){
-          return 4;}  // inverted patch junction detected
+      
+          return 5;}  // inverted patch junction detected
       else{ return 0;} 
 }
 
@@ -299,6 +379,17 @@ void getReading(){
      }
       return;    
 }  
+void white_box_place(int grib){
+     move_forward(4);
+     turn_90(-1);
+     move_forward(5);
+     lift_arm(-7);
+     grip_squre(grib,3);
+     lift_arm(7);
+     move_forward(4);
+     turn_90(1);
+}
+
 
 void ds_getReading(){
     ob_sum=0;
