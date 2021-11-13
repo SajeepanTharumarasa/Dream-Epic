@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.41110965822502854 -0.6974404333137899 -0.586997181333244 4.099720348082778
-  position -1.3553842459163905 2.0370438186647863 -0.18290990702305093
+  orientation -0.033829075459709514 -0.9854328509022137 -0.16666640338195554 2.9164620415869282
+  position -0.4137878924861777 0.4914919007811298 -0.9908273324838197
   follow "rectangle arena"
 }
 TexturedBackground {
@@ -1426,9 +1426,10 @@ DEF Bobby Robot {
           }
         }
         Emitter {
+          channel 1
         }
         Receiver {
-          channel 1
+          channel 2
         }
         DEF IR_Panel Transform {
           translation 0 -0.01 0.06
@@ -2190,7 +2191,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation 0.04 -0.042 0.05
-        rotation -0.6752598785466083 -0.6299812018967139 -0.38359846412882237 2.857948407056615
+        rotation 0.8118471316602163 -0.5679448889687224 0.1354357335025919 2.691993800662011
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -2219,7 +2220,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation -0.04 -0.042 0.05
-        rotation 0.46956380566607697 0.8216398966440501 -0.3231372969051164 4.149340315498696
+        rotation -0.8901375037179559 0.1326061131362895 -0.4359711495427786 2.655428053961037
         children [
           DEF ball Shape {
             appearance PBRAppearance {
