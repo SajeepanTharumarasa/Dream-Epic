@@ -1,0 +1,307 @@
+#VRML_OBJ R2021a utf8
+Robot {
+  translation -3.81324e-06 0 1.64
+  rotation 0 1 0 3.14159
+  children [
+    DEF body Transform {
+      translation 0 0.02 0
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.815686 1 0.388235
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.12 0.01 0.1
+          }
+        }
+      ]
+    }
+    DEF right_wheel HingeJoint {
+      jointParameters HingeJointParameters {
+        position 1432.3199093411852
+        anchor -0.055 0.02 -0.03
+      }
+      device [
+        RotationalMotor {
+          name "left_motor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.055 0.02 -0.0299996
+        rotation 0.2660720619028865 0.2660761325776102 -0.9265037234395168 1.6470578970598813
+        children [
+          DEF wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 0.333333 0
+              roughness 0.2
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.01
+              radius 0.02
+            }
+          }
+        ]
+        boundingObject USE wheel
+        physics Physics {
+        }
+      }
+    }
+    DEF left_wheel HingeJoint {
+      jointParameters HingeJointParameters {
+        position 1432.3199085819226
+        anchor 0.055 0.02 -0.03
+      }
+      device [
+        RotationalMotor {
+          name "right_motor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.055 0.019997 -0.0299951
+        rotation -0.2899604715287653 -0.28996428624188236 0.9120546242715136 4.620466204661718
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0 0.333333 0
+              roughness 0.2
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.01
+              radius 0.02
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE wheel
+        physics Physics {
+        }
+      }
+    }
+    DEF piller_detect HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 0.045 0
+      }
+      device [
+        RotationalMotor {
+          name "piller_detect_bottom"
+        }
+      ]
+      endPoint Solid {
+        translation -1.7310081882179355e-11 0.03999985208433487 -6.375394956170562e-10
+        rotation -6.478684776060195e-14 -1 -1.5708127643699157e-12 3.1564405764495294
+        children [
+          DEF sensor Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.666667 1
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.03
+              radius 0.01
+            }
+          }
+          DistanceSensor {
+            translation 0 -0.01 0
+            name "bottom_sensor"
+            lookupTable [
+              0 0 0
+              0.4 1000 0
+            ]
+            type "infra-red"
+          }
+          DistanceSensor {
+            translation 0 0.01 0
+            name "top_sensor"
+            lookupTable [
+              0 0 0
+              0.4 1000 0
+            ]
+            type "infra-red"
+          }
+        ]
+        name "solid(3)"
+        boundingObject USE sensor
+        physics Physics {
+        }
+      }
+    }
+    DEF support_ball Solid {
+      translation 0 0.0075 0.05
+      rotation 0 0 -1 2.3276357876976306e-07
+      children [
+        DEF ball Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Sphere {
+            radius 0.0075
+          }
+        }
+      ]
+      name "solid(2)"
+      boundingObject USE ball
+      physics Physics {
+      }
+    }
+    DEF left2 HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 0.01
+        anchor 0.035 0.02 0.064
+      }
+      device [
+        RotationalMotor {
+          name "left2"
+        }
+      ]
+      endPoint DEF left_2 DistanceSensor {
+        translation 0.035 0.02 0.064
+        rotation 0 0 -0.9999999999999999 1.5706999999999998
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.666667 0 0.498039
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.008 0.008 0.008
+            }
+          }
+        ]
+        name "left2_ir"
+        lookupTable [
+          0 0 0
+          0.15 1000 0
+        ]
+        type "infra-red"
+      }
+    }
+    DEF left DistanceSensor {
+      translation 0.017 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "left_ir"
+      type "infra-red"
+    }
+    DEF center DistanceSensor {
+      translation 0 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "center_ir"
+      type "infra-red"
+    }
+    DEF right DistanceSensor {
+      translation -0.017 0.02 0.06
+      rotation 0 0 1 -1.5707
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0235294 0.0352941 0.85098
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.008 0.008 0.008
+          }
+        }
+      ]
+      name "right_ir"
+      type "infra-red"
+    }
+    DEF right2 HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 0.01
+        anchor -0.035 0.02 0.064
+      }
+      device [
+        RotationalMotor {
+          name "right2"
+        }
+      ]
+      endPoint DEF right_2 DistanceSensor {
+        translation -0.03500000000000003 0.02 0.064
+        rotation 0 0 -0.9999999999999999 1.5706999999999998
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColor 0.666667 0 0.498039
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.008 0.008 0.008
+            }
+          }
+        ]
+        name "right2_ir"
+        lookupTable [
+          0 0 0
+          0.15 1000 0
+        ]
+        type "infra-red"
+      }
+    }
+    Camera {
+      translation 0 0.02 0.06
+      rotation 1 0 0 -1.5707996938995747
+      children [
+        Solid {
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 0
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.01 0.01 0.01
+              }
+            }
+          ]
+        }
+      ]
+      recognitionColors [
+        0 0 0
+      ]
+    }
+  ]
+  boundingObject USE body
+  physics Physics {
+    density -1
+    mass 1
+  }
+  controller "Dream_epic_contoller"
+  controllerArgs [
+    ""
+  ]
+}

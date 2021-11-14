@@ -1,0 +1,20 @@
+#VRML_OBJ R2021a utf8
+DEF Red_Line_1 Solid {
+  translation -1.1289 -0.0049 -0.56
+  children [
+    DEF Red_Line_Long Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        roughness 0.9
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../solidworks/RedLineLong.STL"
+        ]
+      }
+    }
+  ]
+  name "Red_Line_1"
+  locked TRUE
+}

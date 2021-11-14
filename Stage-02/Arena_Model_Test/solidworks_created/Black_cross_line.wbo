@@ -1,0 +1,20 @@
+#VRML_OBJ R2021a utf8
+DEF Black_Cross Solid {
+  translation -0.614 -0.0048 0.615
+  children [
+    DEF Black_Cross Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 0
+        roughness 0.9
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../solidworks/BlackCross.STL"
+        ]
+      }
+    }
+  ]
+  name "Black_Cross"
+  locked TRUE
+}
