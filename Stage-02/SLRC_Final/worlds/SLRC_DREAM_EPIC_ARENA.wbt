@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.29805048872637097 -0.7810874282046861 -0.5486969433763602 3.9969071280620776
-  position -2.2307778896039916 2.305980234507032 1.539872516517049
+  orientation -0.618339723628942 0.6616886907197844 0.4240566739906605 1.5366588977524647
+  position -1.1392072915234253 1.2868341245184358 1.3517701744988941
   follow "rectangle arena"
 }
 TexturedBackground {
@@ -1145,7 +1145,7 @@ DEF RED_DOT_SQUARE Group {
 DEF Boxes Group {
   children [
     DEF White_Box_1 Solid {
-      translation -2.87 0.02 1.2
+      translation -1.63 0.02 1.09
       children [
         DEF White_Box Shape {
           appearance PBRAppearance {
@@ -1384,13 +1384,13 @@ DirectionalLight {
   direction 0 -1 1
 }
 DEF Bobby Robot {
-  translation -3.36 0.05 1.72
+  translation -2.01 0.05 1.09
   rotation 0 1 0 1.5708
   children [
     DEF BODY Transform {
       children [
         Camera {
-          translation 0 -0.025 0.11
+          translation 0 -0.025 0.1
           rotation -1 0 0 1.5707
           children [
             Shape {
@@ -1405,14 +1405,16 @@ DEF Bobby Robot {
           recognitionColors [
             0 0 0
           ]
+          fieldOfView 0.3
           width 9
           height 9
+          far 0.03
         }
         DEF Body Solid {
           children [
             DEF body_box Shape {
               appearance PBRAppearance {
-                baseColor 1 1 0
+                baseColor 0.4 0.4 0.1
                 roughness 1
                 metalness 0
               }
@@ -1427,14 +1429,63 @@ DEF Bobby Robot {
           }
         }
         Emitter {
+          children [
+            Solid {
+              translation 0.03 0 -0.06
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.4 0.3 1
+                    metalness 0
+                  }
+                  geometry Capsule {
+                    height 0.01
+                    radius 0.02
+                  }
+                }
+              ]
+            }
+          ]
           channel 1
         }
         Receiver {
+          children [
+            Solid {
+              translation -0.03 0 -0.06
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.5 0.3 1
+                    metalness 0
+                  }
+                  geometry Capsule {
+                    height 0.01
+                    radius 0.02
+                  }
+                }
+              ]
+            }
+          ]
           channel 2
         }
         DEF IR_Panel Transform {
-          translation 0 -0.01 0.06
+          translation 0 -0.01 0.07
           children [
+            Solid {
+              translation 0 -0.01 0.01
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.5 0 1
+                    metalness 0
+                  }
+                  geometry Box {
+                    size 0.1 0.03 0.02
+                  }
+                }
+              ]
+              name "solid(10)"
+            }
             DistanceSensor {
               translation 0.045 -0.02 0.01
               rotation 0 0 1 -1.57
@@ -1457,6 +1508,10 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_L"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
             DistanceSensor {
@@ -1481,6 +1536,10 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_1"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
             DistanceSensor {
@@ -1505,6 +1564,10 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_2"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
             DistanceSensor {
@@ -1529,6 +1592,10 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_3"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
             DistanceSensor {
@@ -1553,6 +1620,10 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_4"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
             DistanceSensor {
@@ -1577,6 +1648,10 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_5"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
             DistanceSensor {
@@ -1601,6 +1676,10 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_6"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
             DistanceSensor {
@@ -1625,19 +1704,25 @@ DEF Bobby Robot {
                 }
               ]
               name "IR_R"
+              lookupTable [
+                0 0 0
+                0.05 1000 0
+              ]
               type "infra-red"
             }
           ]
         }
         DEF Distance_sensor_Panel Transform {
-          translation 0 -0.02 0.07
-          rotation -1 0 0 1.54
+          translation 0 -0.03 0.08
+          rotation -1 0 0 1.5707
           children [
             Solid {
               translation 0 -0.015 0.02
               children [
                 Shape {
                   appearance PBRAppearance {
+                    baseColor 0.3 0.1 0.1
+                    metalness 0
                   }
                   geometry Box {
                     size 0.16 0.01 0.03
@@ -1749,33 +1834,6 @@ DEF Bobby Robot {
                 }
               ]
               name "D_L1"
-              lookupTable [
-                0 0 0
-                0.3 1000 0
-              ]
-            }
-            DistanceSensor {
-              translation 0 -0.02 0.01
-              rotation 0 0 1 -1.57
-              children [
-                Solid {
-                  rotation 0 0 1 1.57
-                  children [
-                    Shape {
-                      appearance PBRAppearance {
-                        baseColor 1 0 1
-                        roughness 1
-                        metalness 0
-                      }
-                      geometry Capsule {
-                        height 0.01
-                        radius 0.002
-                      }
-                    }
-                  ]
-                }
-              ]
-              name "D_C"
               lookupTable [
                 0 0 0
                 0.3 1000 0
@@ -1900,7 +1958,7 @@ DEF Bobby Robot {
                 metalness 0
               }
               geometry Cylinder {
-                height 0.03
+                height 0.034
                 radius 0.015
               }
             }
@@ -1919,7 +1977,7 @@ DEF Bobby Robot {
                 metalness 0
               }
               geometry Cylinder {
-                height 0.03
+                height 0.034
                 radius 0.015
               }
             }
@@ -1930,15 +1988,15 @@ DEF Bobby Robot {
           }
         }
         DEF ARM Solid {
-          translation 0 0.07 0
+          translation 0 0.08 0
           children [
             DEF bar_1 Shape {
               appearance PBRAppearance {
-                baseColor 0.1 1 1
+                baseColor 0.1 0.5 1
                 metalness 0
               }
               geometry Box {
-                size 0.02 0.135 0.02
+                size 0.02 0.15 0.02
               }
             }
           ]
@@ -1964,12 +2022,12 @@ DEF Bobby Robot {
         }
       ]
       endPoint Solid {
-        translation 0.09000000140321052 -0.019996293684578458 -0.07000021994808629
-        rotation -0.7073748642599916 0.7068116430670072 0.006172733436343381 3.12923725400608
+        translation 0.09000004979210141 -0.019997144729514176 -0.07000101574838609
+        rotation -0.7073879827007596 0.7068247529063638 0.0010052907078976026 3.1395802181700794
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
-              baseColor 1 0 0
+              baseColor 0.1 0 0
               roughness 1
               metalness 0
             }
@@ -1998,12 +2056,12 @@ DEF Bobby Robot {
         }
       ]
       endPoint Solid {
-        translation -0.08999999859788743 -0.019996309786706575 -0.07000021576214616
-        rotation -0.7053346183721572 0.7047730086201288 0.07614514066134002 2.9894748371913384
+        translation -0.09000004612391521 -0.019998323937113795 -0.07000200036220172
+        rotation -0.7056054793613161 0.7050436542880163 0.07095317500639055 2.9998110150774444
         children [
           DEF wheel Shape {
             appearance PBRAppearance {
-              baseColor 1 0 0
+              baseColor 0.1 0 0
               roughness 1
               metalness 0
             }
@@ -2032,7 +2090,8 @@ DEF Bobby Robot {
         }
       ]
       endPoint Solid {
-        translation -0.015 0.12 0.09
+        translation -0.015 0.14 0.0900003
+        rotation 0.9942480097404769 0.0021752532140182222 0.10708017277047811 6.219005882387998e-07
         children [
           Transform {
             children [
@@ -2151,18 +2210,29 @@ DEF Bobby Robot {
                       }
                     }
                     Camera {
-                      translation 0 -0.02 0.02
+                      translation 0 -0.02 0.015
                       rotation -1 0 0 1.5707
                       children [
-                        Shape {
-                          appearance PBRAppearance {
-                          }
-                          geometry Box {
-                            size 0.01 0.02 0.01
-                          }
+                        Solid {
+                          translation 0 0.005 0
+                          children [
+                            Shape {
+                              appearance PBRAppearance {
+                                baseColor 0.8 0.9 0.7
+                                metalness 0
+                              }
+                              geometry Box {
+                                size 0.01 0.02 0.01
+                              }
+                            }
+                          ]
                         }
                       ]
                       name "color_sensor_arm"
+                      fieldOfView 0.3
+                      width 3
+                      height 3
+                      far 0.03
                     }
                   ]
                 }
@@ -2181,7 +2251,7 @@ DEF Bobby Robot {
         }
       }
     }
-    BallJoint {
+    DEF left_wheel BallJoint {
       jointParameters BallJointParameters {
         anchor 0.04 -0.042 0.05
       }
@@ -2192,7 +2262,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation 0.04 -0.042 0.05
-        rotation 0.7850303925162929 -0.5917832585744662 0.18308429123412392 2.5450371993712007
+        rotation 0.3930366554879324 0.38194735376295297 0.8364439051104013 4.724421697211489
         children [
           DEF ball Shape {
             appearance PBRAppearance {
@@ -2221,7 +2291,7 @@ DEF Bobby Robot {
       }
       endPoint Solid {
         translation -0.04 -0.042 0.05
-        rotation -0.8672821600414166 0.17580981052148995 -0.4657387308333853 2.897287266520607
+        rotation -0.8066478812934994 -0.0979472719944947 -0.5828597837503847 3.2136928752823772
         children [
           DEF ball Shape {
             appearance PBRAppearance {

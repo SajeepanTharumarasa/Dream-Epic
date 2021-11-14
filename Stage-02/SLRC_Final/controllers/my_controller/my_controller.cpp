@@ -17,6 +17,7 @@ using namespace webots;
 #define COMMUNICATION_CHANNEL_1 1 
 // Bobby to bunny communication (Bunny->sender, Bobby-> reciever)
 #define COMMUNICATION_CHANNEL_2 2              
+/////////////////////////////////////////////////////////////////
 
 
 Robot *robot = new Robot();
@@ -56,6 +57,7 @@ PositionSensor* right_arm_gr_ps = robot->getPositionSensor ("right_arm_gr_ps");
 //////////////////////////////////////////////////////////////////////////////////////////////
 ////                      ## Declare the essential varibles ##                            ////
 //////////////////////////////////////////////////////////////////////////////////////////////
+
 // line following PID controller parameters
 double previous_error=0.0;
 double kp=0.07;  //3
@@ -81,7 +83,7 @@ int junction;
 //////////////////////////////////////////////////////////////////////////////////////////////
 ////                           ## Define the Functions ##                                ////
 //////////////////////////////////////////////////////////////////////////////////////////////
-int getColorAt(int x);                          // detect the color object/line
+int get_color_at(int x);                          // detect the color object/line
 void getReading();                              // mesure the reading of line follow IR sensor
 void ds_getReading();                           // measur the reading of distance sensor
 double PID();                                   // follow the center white line
@@ -97,27 +99,31 @@ void reciever();                                // recieve the signal from bunny
 double ob_PID();                                // align the robot with object
 int bottom_square_size();                       // fing the detected bottom squre size
 void navi_s_m(int from , int to);
+void move_towords_object();
+int move_until_next_decision_point();
+void white_box_place(int grib);
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+/////           ---- main  algoritham ---                                                     /////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv) {
       setup();
       
-      while (task_completed!=1) {
-        robot->step(TIME_STEP);                           // step up the time
-        ds_getReading();
-        navi_s_m(1,3);
-        continue;
-        if(maze_solved==0){
-            if(obstacle_detection() !=0){}                // obstacle detection to avoding collision 
-            else{
-              getReading();
-              junction=junction_detect();
-                    
-              if(junction>0){ 
-                  turn_90(1);}
-              else{  PID();}
-              } 
-          }
-          else{}                                           // solve the maze with full data quickly
+      while (robot->step(TIME_STEP)!=-1) {
+          int color =get_color_at(0);
+          std::cout << " color" << color<<std::endl;
+
+          move_towords_object();
+          move_forward(5);
+          lift_arm(-9);
+          grip_squre(1,4);
+          lift_arm(4);
+          move_until_next_decision_point();
+          turn_90(1);
+          //white_box_place(1);
+          //move_until_next_decision_point();     
+          //move_towords_object();
+          //navi_s_m(1,2);
+          break;
       };
 
   delete robot;
@@ -151,6 +157,7 @@ int bottom_square_size(){
       else{return 0;}
 }
 
+
 void reciever(){
     if (receiver->getQueueLength() > 0) {
           /* read current packet's data */
@@ -166,7 +173,9 @@ void reciever(){
           /* fetch next packet */
           receiver->nextPacket();
        } 
-  }
+}
+
+
 int obstacle_detection(){
       if(ob_sum>0){                               // obstacle detected in 30cm range
           leftMotor->setVelocity(0);
@@ -179,7 +188,6 @@ int obstacle_detection(){
           }
          
           int steps=0;
-          
           // check the obstacle is other robot or not          
           while(steps<10){
               robot->step(TIME_STEP);  
@@ -190,18 +198,59 @@ int obstacle_detection(){
                }  
            }
            return 2;
-
-           // move towords object
-           // grib the oblect
-           // switch back to line
-           // move to previous junction          
+                    
       }
       return 0;
-      }
+      
+}
+
+
+void move_towords_object(){
+      double stop_value=(1000/30)*10;
+      
+      while(robot->step(TIME_STEP) != -1){
+          ds_getReading(); 
+          std::cout << " color" << ob_reading_ds[3]<<std::endl;
+          std::cout << " color" << stop_value<<std::endl;
+          
+          if(ob_reading_ds[3]<stop_value || ob_reading_ds[4]<stop_value){
+              leftMotor->setVelocity(0);
+              rightMotor->setVelocity(0);
+              break;
+              }
+          else{ob_PID();}
+        }
+}
+
+// return the color of the box which picked
+// 1--> blus // 2--> green // 3--> red // 
+int detect_grib_square(){
+      int level[3];
+      
+      int size=bottom_square_size();
+      move_forward(size+1);
+      for (int i = 0; i < size; i++){
+          lift_arm(-1*level[i]);
+          int color= 4-get_color_at(1);
+          
+          if(color==4){
+             grip_squre(1,3);                  // grib the white squre
+             lift_arm(level[0]);
+             return color;}
+          else if(color<= size){
+              grip_squre(1,color);
+              lift_arm(level[0]);
+              return color;
+              }
+          }
+        return 0;       
+ }
+
 //return values 1--> robot// 2--> object // 3--> normal junction // 4--> white patch // 5--> inverted patch
 int move_until_next_decision_point(){
          // release from next current junction point
          while(robot->step(TIME_STEP) != -1){
+             ds_getReading(); 
              getReading();
              if(junction_detect()>0){
                  leftMotor->setVelocity(max_speed);
@@ -237,7 +286,8 @@ int move_until_next_decision_point(){
 void navi_s_m(int from , int to){
            // 1--> start point // 2--> intermediate patch // 3--> matrix origin point
         move_until_next_decision_point();
-        move_forward(14);
+        move_forward(10);
+        
         if((from-to)==-1){
             turn_90(-1);}
         else if((from-to)==1){
@@ -245,11 +295,23 @@ void navi_s_m(int from , int to){
         move_until_next_decision_point();  
 
 }
+void white_box_place(int grib){
+     move_forward(4);
+     turn_90(-1);
+     move_forward(5);
+     lift_arm(-8);
+     grip_squre(grib,3);
+     lift_arm(8);
+     move_forward(4);
+     turn_90(1);
+}
+
 void grip_squre(int grib,double dis){
       int l_gr = left_arm_gr_ps->getValue ();
       int r_gr = right_arm_gr_ps->getValue ();
       int d=0;
-
+      //leftMotor->setVelocity(0);
+      //rightMotor->setVelocity(0);
       if (grib==0){
          d=-1;
          dis=move_dis;}
@@ -333,17 +395,17 @@ void move_forward(double dis){
 }
 
 void turn_90(int dir){                             // direction 1 for right and -1 for left
-    move_forward(14);
+    
     int lpsn = leftPs->getValue ();
     int rpsn = rightPs->getValue ();
     
     while(robot->step(TIME_STEP) != -1){
         double leftPsVal = leftPs->getValue ();
         double rightPsVal = rightPs->getValue ();
-        
+        //grip_squre(1,1);
         if((leftPsVal-lpsn<n) && (rightPsVal-rpsn<n)){
-           leftMotor->setVelocity(dir*max_speed);
-           rightMotor->setVelocity(dir*max_speed);}
+           leftMotor->setVelocity(dir*max_speed/5);
+           rightMotor->setVelocity(-1*dir*max_speed/5);}
          else{
            leftMotor->setVelocity(0);
            rightMotor->setVelocity(0);
@@ -352,7 +414,7 @@ void turn_90(int dir){                             // direction 1 for right and 
        }
 }
 
-int getColorAt (int x) {
+int get_color_at (int x) {
     const unsigned char* image = camera[x]->getImage ();
     
     int r = camera[x]->imageGetRed (image, image_width, 1, 1);
@@ -379,18 +441,8 @@ void getReading(){
      }
       return;    
 }  
-void white_box_place(int grib){
-     move_forward(4);
-     turn_90(-1);
-     move_forward(5);
-     lift_arm(-7);
-     grip_squre(grib,3);
-     lift_arm(7);
-     move_forward(4);
-     turn_90(1);
-}
 
-
+// get reading from Distance sensor panel
 void ds_getReading(){
     ob_sum=0;
     for (int i = 0; i < 8; i++) {
@@ -419,8 +471,8 @@ double PID(){
     double D = kd*(error-previous_error);
     double correction = (P+I+D)/1000;
     
-    l_speed = max_speed/2+correction;
-    r_speed = max_speed/2-correction;
+    l_speed = max_speed*0.7+correction;
+    r_speed = max_speed*0.7-correction;
     
     if (l_speed<0.0)  {l_speed=0;}
     else if (l_speed>max_speed) {l_speed=max_speed;}
@@ -452,8 +504,8 @@ double ob_PID(){
     double D = ob_kd*(error-previous_error);
     double correction = (P+I+D)/1000;
     //std::cout << " correction" << correction<<std::endl;
-    l_speed = (max_speed/2+correction)/5;
-    r_speed = (max_speed/2-correction)/5;
+    l_speed = (max_speed/2+correction)/2;
+    r_speed = (max_speed/2-correction)/2;
     
     if (l_speed<0.0)  {l_speed=0;}
     else if (l_speed>max_speed) {l_speed=max_speed;}
@@ -512,7 +564,6 @@ void setup(){
       if (channel_e != COMMUNICATION_CHANNEL_1) {
             emitter->setChannel(COMMUNICATION_CHANNEL_1);}
       emitter->setRange(5);
-    
-      
+          
 }
 
